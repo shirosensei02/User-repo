@@ -16,6 +16,12 @@ function fetchTournamentList() {
         data.forEach((tournament) => {
           const li = document.createElement("li");
           li.textContent = `Tournament ID: ${tournament.id}, Name: ${tournament.name}`;
+          const button = document.createElement("BUTTON");
+          button.id = tournament.id;
+          const text = document.createTextNode("Join");
+          button.appendChild(text);
+          button.onclick = function(){joinTournament(tournament.id, tournament)}
+          li.appendChild(button);
           ul.appendChild(li);
         });
         resultDiv.appendChild(ul);
@@ -28,4 +34,10 @@ function fetchTournamentList() {
         "result"
       ).innerHTML = `<p>Error fetching the tournament list: ${error.message}</p>`;
     });
+}
+
+function joinTournament(tournamentId, tournament){
+  console.log(tournamentId);
+  console.log(tournament);
+  console.log();
 }
