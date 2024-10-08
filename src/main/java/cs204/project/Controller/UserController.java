@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/user")
+public class UserController {
 
     @GetMapping("")
     @ResponseBody
     public String getDashboard(){
-        return "This is admin dashboard";
+        return "This is user dashboard";
     }
 }
