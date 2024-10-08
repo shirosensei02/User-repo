@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AdminController {
 
     @GetMapping("")
-    @ResponseBody
     public String getDashboard(){
-        return "This is admin dashboard";
+        return "admin-dashboard";
     }
     
     @GetMapping("/admin-tournaments")
@@ -29,30 +28,30 @@ public class AdminController {
     public String showAddTournamentPage(Model model) {
         return "addTournament";
     }
+    
+    @PostMapping("/addTournament")
+    public String postMethodName(
+        @RequestParam String name,
+        @RequestParam String datetime,
+        @RequestParam String rankRange,
+        @RequestParam(defaultValue = "Active") String status,
+        @RequestParam String region) {
 
-    // @PostMapping("/addTournament")
-    // public String postMethodName(
-    //     @RequestParam String name,
-    //     @RequestParam String datetime,
-    //     @RequestParam String rankRange,
-    //     @RequestParam(defaultValue = "Active") String status,
-    //     @RequestParam String region) {
+        //TODO: process POST request
 
-    //     //TODO: process POST request
+        // create new tournament object
+        // Tournament tournament = new Tournament();
+        // tournament.setName(name);
+        // tournament.setDatetime(datetime);
+        // tournament.setRankRange(rankRange);
+        // tournament.setStatus(status);
+        // tournament.setRegion(region);
 
-    //     // create new tournament object
-    //     // Tournament tournament = new Tournament();
-    //     // tournament.setName(name);
-    //     // tournament.setDatetime(datetime);
-    //     // tournament.setRankRange(rankRange);
-    //     // tournament.setStatus(status);
-    //     // tournament.setRegion(region);
+        // save it to database
+        // tournamentService.saveTournament(tournament);
 
-    //     // save it to database
-    //     // tournamentService.saveTournament(tournament);
-
-    //     return "redirect:/admin/admin-tournaments";
-    // }
+        return "redirect:/admin/admin-tournaments";
+    }
     
 }
 
