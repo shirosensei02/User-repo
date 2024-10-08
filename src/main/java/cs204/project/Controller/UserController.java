@@ -10,8 +10,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserController {
 
     @GetMapping("")
-    @ResponseBody
-    public String getDashboard(){
-        return "This is user dashboard";
+    public String getHomePage(){
+        return "home_new";
+    }
+
+    @GetMapping("/tournaments")
+    public String getTournaments(){
+        return "tournaments";
+    }
+
+    @GetMapping("/profile")
+    public String getProfilePage(){
+        return "";
     }
 }

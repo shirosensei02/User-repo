@@ -28,12 +28,12 @@ public class HomeController {
         (GrantedAuthority authority : authentication.getAuthorities()) {
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
                 model.addAttribute("message", "Welcome Admin");
-                return "welcome"; // Render a view that shows "Welcome Admin"
+                return "redirect:/admin"; // Render a view that shows "Welcome Admin"
             }
         }
 
         // If not admin, assume the user has "USER" role
         model.addAttribute("message", "Welcome User");
-        return "welcome"; // Render a view that shows "Welcome User"
+        return "redirect:/user"; // Render a view that shows "Welcome User"
     }
 }

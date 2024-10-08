@@ -20,12 +20,12 @@ public class SignupController {
     @GetMapping("/signup")
     public String signupForm(Model model) {
         model.addAttribute("user", new User());
-        return "signup";
+        return "signup_new";
     }
 
     @PostMapping("/signup")
     public String signupSubmit(@ModelAttribute User user) {
         userService.registerUser(user);
-        return "redirect:/login";
+        return "redirect:/login_new";
     }
 }
