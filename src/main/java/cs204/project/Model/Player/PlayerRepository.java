@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 @Repository
-public interface PlayerRepository /*extends JpaRepository<Player, Long> */{
+public interface PlayerRepository extends JpaRepository<Player, Long> {
 
     int deleteById(Long id);
     List<Player> findAll();
