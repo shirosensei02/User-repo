@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Welcome Page</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+
+  <body>
+    <section>
+      <h1 th:text="${message}"></h1>
+      <p>Welcome to your dashboard.</p>
+    </section>
+    <div>
+      <button onclick="fetchTournamentList()">Get Tournament List</button>
+      <div id="result"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../static/js/tournament.js"></script>
+  </body>
+</html>
