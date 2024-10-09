@@ -10,6 +10,7 @@
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Tournament List</h1>
+        <a th:href="@{/admin}" class="btn btn-secondary mb-4">Back to Admin Dashboard</a>
         <a th:href="@{/admin/addTournament}" class="btn btn-success mb-4">Add Tournament</a>
         <div class="row">
             <div class="col-md-4">
@@ -50,6 +51,11 @@
             </div>
         </div>
     </div>
+
+    <footer class="bg-light text-center py-3" style="color: black;">
+        &copy; 2024 CS203. All rights reserved.
+    </footer>
+
     
     <!-- placeholder fucntions for editing and deleting tournaments -->
     <script>

@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="/css/style_new.css">
+
     <style>
         .slider-label {
             margin: 10px 0;
@@ -13,60 +15,65 @@
     </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h1>Add Tournament</h1>
-    <form th:action="@{/admin/admin-tournaments}" method="post">
-        <div class="form-group">
-            <label for="name">Tournament Name</label>
-            <input type="text" id="name" name="name" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="datetime">Date and Time</label>
-            <input type="datetime-local" id="datetime" name="datetime" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="rankRange">Rank Range</label>
-            <div id="rankRangeSlider"></div>
-            <div class="slider-label">
-                <span id="minRank">1</span> - <span id="maxRank">10</span>
+    <div class="container mt-5">
+        <h1>Add Tournament</h1>
+        <form th:action="@{/admin/admin-tournaments}" method="post">
+            <div class="form-group">
+                <label for="name">Tournament Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
             </div>
-            <input type="hidden" id="rankRange" name="rankRange" class="form-control">
-            <small class="form-text text-muted">Select the rank range using the slider.</small>
-        </div>
-        <div class="form-group">
-            <label for="region">Region</label>
-            <select id="region" name="region" class="form-control" required>
-                <option value="" disabled selected>Select a region</option>
-                <option value="Asia">Asia</option>
-                <option value="Europe">Europe</option>
-                <option value="America">America</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Tournament</button>
-        <a href="/admin/admin-tournaments" class="btn btn-secondary">Cancel</a>
-    </form>
-</div>
+            <div class="form-group">
+                <label for="datetime">Date and Time</label>
+                <input type="datetime-local" id="datetime" name="datetime" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="rankRange">Rank Range</label>
+                <div id="rankRangeSlider"></div>
+                <div class="slider-label">
+                    <span id="minRank">1</span> - <span id="maxRank">10</span>
+                </div>
+                <input type="hidden" id="rankRange" name="rankRange" class="form-control">
+                <small class="form-text text-muted">Select the rank range using the slider.</small>
+            </div>
+            <div class="form-group">
+                <label for="region">Region</label>
+                <select id="region" name="region" class="form-control" required>
+                    <option value="" disabled selected>Select a region</option>
+                    <option value="Asia">Asia</option>
+                    <option value="Europe">Europe</option>
+                    <option value="America">America</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Tournament</button>
+            <a href="/admin/admin-tournaments" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
 
-<script>
-    $(function() {
-        $("#rankRangeSlider").slider({
-            range: true,
-            min: 1,
-            max: 100,
-            values: [1, 10],
-            slide: function(event, ui) {
-                $("#rankRange").val(ui.values[0] + ',' + ui.values[1]);
-                $("#minRank").text(ui.values[0]);
-                $("#maxRank").text(ui.values[1]);
-            }
+    <footer class="bg-light text-center py-3" style="color: black;">
+        &copy; 2024 CS203. All rights reserved.
+    </footer>
+
+    <script>
+        $(function() {
+            $("#rankRangeSlider").slider({
+                range: true,
+                min: 1,
+                max: 100,
+                values: [1, 10],
+                slide: function(event, ui) {
+                    $("#rankRange").val(ui.values[0] + ',' + ui.values[1]);
+                    $("#minRank").text(ui.values[0]);
+                    $("#maxRank").text(ui.values[1]);
+                }
+            });
+
+            // Set the initial value of the hidden input and labels
+            $("#rankRange").val($("#rankRangeSlider").slider("values", 0) + ',' + $("#rankRangeSlider").slider("values", 1));
+            $("#minRank").text($("#rankRangeSlider").slider("values", 0));
+            $("#maxRank").text($("#rankRangeSlider").slider("values", 1));
         });
+    </script>
 
-        // Set the initial value of the hidden input and labels
-        $("#rankRange").val($("#rankRangeSlider").slider("values", 0) + ',' + $("#rankRangeSlider").slider("values", 1));
-        $("#minRank").text($("#rankRangeSlider").slider("values", 0));
-        $("#maxRank").text($("#rankRangeSlider").slider("values", 1));
-    });
-</script>
 
 </body>
 </html>
