@@ -63,7 +63,7 @@ public class AdminController {
     return "admin/addTournament";
   }
 
-  @PutMapping("/addTournament")
+  @PostMapping("/addTournament")
   public String postAddTournament(
       @RequestParam String name,
       @RequestParam String datetime,
