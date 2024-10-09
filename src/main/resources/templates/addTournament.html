@@ -15,8 +15,30 @@
     </style>
 </head>
 <body>
+    <h1 class="text-center">Add Tournament</h1>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/admin-tournaments}">Tournaments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/admin-tournaments}">A Link</a>
+                </li>
+            </ul>
+            <form th:action="@{/logout}" method="post" class="d-flex ms-auto">
+                <button class="btn btn-danger" type="submit">Logout</button>
+            </form>
+        </div>
+    </nav>
+    
+
     <div class="container mt-5">
-        <h1>Add Tournament</h1>
+        
         <form th:action="@{/admin/admin-tournaments}" method="post">
             <div class="form-group">
                 <label for="name">Tournament Name</label>
@@ -73,7 +95,6 @@
             $("#maxRank").text($("#rankRangeSlider").slider("values", 1));
         });
     </script>
-
 
 </body>
 </html>
