@@ -5,6 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import org.springframework.ui.Model;
+import org.springframework.web.client.RestTemplate;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -15,8 +20,20 @@ public class UserController {
     }
 
     @GetMapping("/tournaments")
-    public String getTournaments(){
-        return "tournaments";
+    public String getTournaments(Model model) {
+      RestTemplate restTemplate = new RestTemplate();
+
+      // URL of the tournament service through gateway
+      String tournamentApiUrl = "http://localhost:8080/tournaments";
+
+      // Fetch tournaments as a list of maps (JSON objects)
+      List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
+      System.out.println(tournaments.toString());
+      
+      // Pass the fetched tournaments to the Thymeleaf view
+      model.addAttribute("tournaments", tournaments);
+
+      return "tournaments"; // This returns the tournaments.html Thymeleaf view
     }
 
     @GetMapping("/profile")
