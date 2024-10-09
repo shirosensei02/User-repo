@@ -1,10 +1,14 @@
 package cs204.project.Service;
 
+import java.util.List;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import cs204.project.Entity.User;
 import cs204.project.Repo.UserRepository;
@@ -43,5 +47,9 @@ public class UserDetailService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
         repository.save(user);
+    }
+
+    public Page<User> findAllUsers(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 }
