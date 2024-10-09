@@ -29,17 +29,17 @@ public class AdminController {
 
     @GetMapping("")
     public String getDashboard(){
-        return "admin-dashboard";
+        return "admin/admin-dashboard";
     }
     
     @GetMapping("/admin-tournaments")
     public String getTournaments(){
-        return "admin-tournaments";
+        return "admin/admin-tournaments";
     }
     
     @GetMapping("/addTournament")
     public String showAddTournamentPage(Model model) {
-        return "addTournament";
+        return "admin/addTournament";
     }
     
     @PostMapping("/addTournament")
@@ -78,7 +78,7 @@ public class AdminController {
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", userPage.getTotalPages());
             
-            return "user-management";
+            return "admin/user-management";
     }
     
 }

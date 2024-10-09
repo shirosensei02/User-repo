@@ -13,13 +13,13 @@ public class UserController {
 
     @GetMapping("")
     public String getHomePage(){
-        return "home_new";
+        return "users/home_new";
     }
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/tournaments")
     public String getTournaments(){
-        return "tournaments";
+        return "users/tournaments";
     }
 
     @GetMapping("/profile")

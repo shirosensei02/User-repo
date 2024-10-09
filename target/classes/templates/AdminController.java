@@ -78,7 +78,7 @@ public class AdminController {
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", userPage.getTotalPages());
             
-            return "user-management";
+            return "./admin/user-management";
     }
     
 }
