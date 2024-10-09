@@ -4,9 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
@@ -17,25 +22,44 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class AdminController {
 
-  @GetMapping("")
-  public String getHomePage() {
-    return "admin/admin_home";
-  }
+    @GetMapping("")
+    public String getDashboard(){
+        return "admin-dashboard";
+    }
+    
+    @GetMapping("/admin-tournaments")
+    public String getTournaments(){
+        return "admin-tournaments";
+    }
+    
+    @GetMapping("/addTournament")
+    public String showAddTournamentPage(Model model) {
+        return "addTournament";
+    }
+    
+    @PostMapping("/addTournament")
+    public String postMethodName(
+        @RequestParam String name,
+        @RequestParam String datetime,
+        @RequestParam String rankRange,
+        @RequestParam(defaultValue = "Active") String status,
+        @RequestParam String region) {
 
-  @GetMapping("/tournaments")
-  public String getTournaments(Model model) {
-    RestTemplate restTemplate = new RestTemplate();
+        //TODO: process POST request
 
-    // URL of the tournament service through gateway
-    String tournamentApiUrl = "http://localhost:8080/tournaments";
+        // create new tournament object
+        // Tournament tournament = new Tournament();
+        // tournament.setName(name);
+        // tournament.setDatetime(datetime);
+        // tournament.setRankRange(rankRange);
+        // tournament.setStatus(status);
+        // tournament.setRegion(region);
 
-    // Fetch tournaments as a list of maps (JSON objects)
-    List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
-    System.out.println(tournaments.toString());
+        // save it to database
+        // tournamentService.saveTournament(tournament);
 
-    // Pass the fetched tournaments to the Thymeleaf view
-    model.addAttribute("admin_tournaments", tournaments);
-
-    return "admin/admin_tournaments"; // This returns the admin_tournaments.html Thymeleaf view
-  }
+        return "redirect:/admin/admin-tournaments";
+    }
+    
 }
+

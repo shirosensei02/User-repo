@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournaments</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style_new.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Tournament List</h1>
+        <a th:href="@{/admin/addTournament}" class="btn btn-success mb-4">Add Tournament</a>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Tournament Name 1</h5>
+                        <p class="card-text">Date: January 15, 2025</p>
+                        <p class="card-text">Location: New York City</p>
+                        <a href="#" class="btn btn-primary">Details</a>
+                        <a href="#" class="btn btn-warning" onclick="editTournament(1)">Edit</a>
+                        <a href="#" class="btn btn-danger" onclick="deleteTournament(1)">Delete</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Tournament Name 2</h5>
+                        <p class="card-text">Date: February 20, 2025</p>
+                        <p class="card-text">Location: Los Angeles</p>
+                        <a href="#" class="btn btn-primary">Details</a>
+                        <a href="#" class="btn btn-warning" onclick="editTournament(2)">Edit</a>
+                        <a href="#" class="btn btn-danger" onclick="deleteTournament(2)">Delete</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Tournament Name 3</h5>
+                        <p class="card-text">Date: March 30, 2025</p>
+                        <p class="card-text">Location: Chicago</p>
+                        <a href="#" class="btn btn-primary">Details</a>
+                        <a href="#" class="btn btn-warning" onclick="editTournament(3)">Edit</a>
+                        <a href="#" class="btn btn-danger" onclick="deleteTournament(3)">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- placeholder fucntions for editing and deleting tournaments -->
+    <script>
+    function editTournament(id) {
+        alert("Edit tournament with ID: " + id);
+    }
+    
+    function deleteTournament(id) {
+        if (confirm("Are you sure you want to delete this tournament?")) {
+            alert("Deleted tournament with ID: " + id);
+        }
+    }
+    </script>
+</body>
+</html>
