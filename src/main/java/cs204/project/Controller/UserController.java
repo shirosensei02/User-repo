@@ -18,7 +18,7 @@ public class UserController {
 
     @GetMapping("")
     public String getHomePage(){
-        return "home_new";
+        return "users/home_new";
     }
 
     @PreAuthorize("hasRole('USER')")

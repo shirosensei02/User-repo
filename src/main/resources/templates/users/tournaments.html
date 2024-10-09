@@ -103,7 +103,6 @@
             </div>
           </div> -->
 
-    
           <div class="container">
             <div class="row" th:if="${tournaments != null}">
               <!-- Iterate over the list of tournaments -->
@@ -117,15 +116,10 @@
                     <h6
                       class="card-text"
                       th:text="'Rank Range: ' + ${tournament['rankRange'][0]} + ' - ' + ${tournament['rankRange'][1]}"
-                    >
-                    </h6>
+                    ></h6>
 
                     <!-- Display tournament date -->
-                    <h6
-                      class="card-text"
-                      th:text="'Date: ' + ${tournament.date}"
-                    >
-                    </h6>
+                    <h6 class="card-text" th:text="'Date: ' + ${tournament.date}"></h6>
 
                     <!-- Button to join the tournament -->
                     <div class="d-flex justify-content-end">
