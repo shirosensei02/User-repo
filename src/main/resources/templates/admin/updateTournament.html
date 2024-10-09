@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Update Tournament</title>
+    <!-- <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" /> -->
+     <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="mb-4">Update Tournament</h1>
+
+      <!-- Form pre-populated with tournament data -->
+      <form th:action="@{/admin/updateTournament}" method="post">
+        <input type="hidden" name="id" th:value="${tournament.id}" />
+
+        <div class="form-group">
+          <label for="name">Tournament Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-control"
+            th:value="${tournament.name}"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="datetime">Date and Time</label>
+          <input
+            type="datetime-local"
+            id="datetime"
+            name="datetime"
+            class="form-control"
+            th:value="${tournament.date}"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="minRank">Minimum Rank</label>
+          <input
+            type="number"
+            id="minRank"
+            name="minRank"
+            class="form-control"
+            th:value="${tournament.rankRange[0]}"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="maxRank">Maximum Rank</label>
+          <input
+            type="number"
+            id="maxRank"
+            name="maxRank"
+            class="form-control"
+            th:value="${tournament.rankRange[1]}"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" name="status" class="form-control" required>
+            <option th:selected="${tournament.region == 'Open'}" value="Open">Open</option>
+            <option th:selected="${tournament.region == 'Ongoing'}" value="Ongoing">Ongoing</option>
+            <option th:selected="${tournament.region == 'Completed'}" value="Completed">Completed</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="region">Region</label>
+          <select id="region" name="region" class="form-control" required>
+            <option th:selected="${tournament.region == 'Asia'}" value="Asia">Asia</option>
+            <option th:selected="${tournament.region == 'Europe'}" value="Europe">Europe</option>
+            <option th:selected="${tournament.region == 'America'}" value="America">America</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Tournament</button>
+        <a href="/admin/admin-tournaments" class="btn btn-secondary">Cancel</a>
+      </form>
+    </div>
+
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+  </body>
+</html>
