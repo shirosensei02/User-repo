@@ -39,6 +39,12 @@ public class UserController {
       return "users/tournaments"; // This returns the tournaments.html Thymeleaf view
     }
 
+    @GetMapping("/test")
+    public String getTest(){
+      System.out.println("test works");
+      return "";
+    }
+
     @GetMapping("/profile")
     public String getProfilePage(){
         return "";
