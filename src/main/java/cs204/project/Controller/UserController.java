@@ -31,12 +31,12 @@ public class UserController {
 
       // Fetch tournaments as a list of maps (JSON objects)
       List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
-      System.out.println(tournaments.toString());
+      // System.out.println(tournaments.toString());
       
       // Pass the fetched tournaments to the Thymeleaf view
       model.addAttribute("tournaments", tournaments);
 
-      return "tournaments"; // This returns the tournaments.html Thymeleaf view
+      return "users/tournaments"; // This returns the tournaments.html Thymeleaf view
     }
 
     @GetMapping("/profile")
