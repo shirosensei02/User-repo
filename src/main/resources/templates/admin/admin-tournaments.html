@@ -40,6 +40,8 @@
 
       <a th:href="@{/admin/addTournament}" class="btn btn-success mb-4">Add Tournament</a>
 
+      <input type="hidden" id="csrfToken" th:value="${_csrf.token}"/>
+
       <div class="row">
         <!-- Iterate over the list of tournaments -->
         <div class="col-md-4" th:each="tournament : ${adminTournaments}">
@@ -135,8 +137,13 @@
     <script>
       function deleteTournament(id) {
         if (confirm("Are you sure you want to delete this tournament?")) {
+          const csrfToken = document.getElementById('csrfToken').value;
           fetch("/admin/tournaments/" + id, {
             method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken, // Include CSRF token
+            },
           })
             .then((response) => {
               if (response.ok) {

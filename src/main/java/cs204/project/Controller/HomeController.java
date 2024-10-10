@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cs204.project.Entity.CustomUserDetails;
+
 
 @Controller
 public class HomeController { 
@@ -22,6 +24,17 @@ public class HomeController {
     public String home(Model model) {
         // Get the authentication object
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication != null && authentication.isAuthenticated()){
+            //Get Principal
+            CustomUserDetails customUDetails = (CustomUserDetails)authentication.getPrincipal();
+
+            //Get User ID
+            System.out.println(customUDetails.getId());
+
+            //Get User Role
+            System.out.println(customUDetails.getAuthorities());
+        }
 
         // Iterate over the user's roles (authorities)
         for

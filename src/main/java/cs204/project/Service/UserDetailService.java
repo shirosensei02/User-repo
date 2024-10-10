@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import cs204.project.Entity.CustomUserDetails;
 import cs204.project.Entity.User;
 import cs204.project.Repo.UserRepository;
 
@@ -33,11 +34,13 @@ public class UserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
 
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .roles(user.getRole().split(","))
-                .build();
+        // return org.springframework.security.core.userdetails.User.builder()
+        //         .username(user.getUsername())
+        //         .password(user.getPassword())
+        //         .roles(user.getRole().split(","))
+        //         .build();
+
+        return new CustomUserDetails(user);
     }
 
     public void registerUser(User user) {
