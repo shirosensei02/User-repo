@@ -3,6 +3,7 @@
 /Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Controller/HomeController.java
 /Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Controller/SignupController.java
 /Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Controller/UserController.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Entity/CustomUserDetails.java
 /Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Entity/User.java
 /Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/ProjectApplication.java
 /Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Repo/UserRepository.java

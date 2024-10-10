@@ -11,9 +11,12 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
   </head>
   <body>
+    <div class="text-center">
+        <h1>Add Tournament</h1>
+    </div>
+    <div th:replace="admin/admin-header :: admin-header"></div>
     <div class="container mt-5">
-      <h1>Add Tournament</h1>
-      <div th:replace="admin/admin-header :: admin-header"></div>
+      
     
       <form th:action="@{/admin/addTournament}" method="post">
         <div class="form-group">

@@ -57,14 +57,14 @@ public class AdminController {
     // RestTemplate restTemplate = new RestTemplate();
 
     // URL of the tournament service through gateway
-    String tournamentApiUrl = "http://localhost:8080/tournaments";
+    // String tournamentApiUrl = "http://localhost:8080/tournaments";
 
     // Fetch tournaments as a list of maps (JSON objects)
-    List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
-    tournaments.sort(Comparator.comparing(t -> (String) t.get("date"))); // Adjust according to your date format
+    // List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
+    // tournaments.sort(Comparator.comparing(t -> (String) t.get("date"))); // Adjust according to your date format
 
-    // Pass the fetched tournaments to the Thymeleaf view
-    model.addAttribute("adminTournaments", tournaments);
+    // // Pass the fetched tournaments to the Thymeleaf view
+    // model.addAttribute("adminTournaments", tournaments);
 
     return "admin/admin-tournaments"; // This returns the tournaments.html Thymeleaf view
   }
