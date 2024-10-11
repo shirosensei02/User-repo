@@ -2,6 +2,7 @@ package cs204.project.Controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 
 import cs204.project.Entity.User;
 import cs204.project.Service.UserDetailService;
+// import main.java.cs204.project.Entity.Player;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -190,9 +192,98 @@ public class AdminController {
     return ResponseEntity.noContent().build(); // Respond with 204 No Content
   }
 
-  @GetMapping("startTournament/{id}")
-  public String startTournament(){
-    
+  @GetMapping("/startTournament/{id}")
+  public String startTournament(@PathVariable Long id, Model model) {
+    // API URL to get tournament details by ID
+    String apiUrl = "http://localhost:8080/tournaments/" + id;
+
+    // Use RestTemplate to call the API and fetch the tournament details
+    RestTemplate restTemplate = new RestTemplate();
+    Map<String, Object> tournamentData = restTemplate.getForObject(apiUrl, Map.class);
+
+    // Retrieve player list from the tournament
+    List<Long> playerList = (List<Long>) tournamentData.get("playerList");
+
+    // this for testing change to Matchmaking api calls
+    // Split playerList into 4 lists of 8 players each
+    List<List<Long>> playerGroups = new ArrayList<>();
+    for (int i = 0; i < 4; i++) {
+      playerGroups.add(playerList.subList(i * 8, Math.min((i + 1) * 8, playerList.size())));
+    }
+
+
+    // for mm api after its done
+    // Create a list of maps for players
+    // List<Player> players = new ArrayList<>();
+    // for (int i = 0; i < playerList.size(); i++) {
+    //   Long playerId = playerList.get(i);
+    //   Player playerData = new Player(playerId, userService.findById(playerId).getRank());
+    //   players.add(playerData);
+    // }
+
+    // // Prepare the payload for the matchmaking API
+    // Map<String, Object> payload = new HashMap<>();
+    // payload.put("tournamentId", id);
+    // payload.put("players", players);
+
+    // // API URL to send player list to matchmaking API
+    // String matchmakingApiUrl = "http://localhost:8080/matchmaking";
+
+    // // Call the matchmaking API to get the split lists of players
+    // List<List<Map<String, Object>>> playerGroups = restTemplate.postForObject(matchmakingApiUrl, payload, List.class);
+
+    // Add player groups and tournament details to the model
+    model.addAttribute("tournament", tournamentData);
+    model.addAttribute("playerGroups", playerGroups);
+
+    return "admin/startTournament"; // return the startTournament Thymeleaf view
+  }
+
+  @PostMapping("/startTournament/{id}")
+  public String nextRound(@PathVariable Long id, Model model) {
+    // Handle the logic for starting the next round
+    // API URL to get tournament details by ID
+    String apiUrl = "http://localhost:8080/tournaments/" + id;
+
+    // Use RestTemplate to call the API and fetch the tournament details
+    RestTemplate restTemplate = new RestTemplate();
+    Map<String, Object> tournamentData = restTemplate.getForObject(apiUrl, Map.class);
+
+    // for testing
+    // Retrieve player list from the tournament
+    List<Long> playerList = (List<Long>) tournamentData.get("playerList");
+
+    List<List<Long>> playerGroups = new ArrayList<>();
+    for (int i = 0; i < 4; i++) {
+      playerGroups.add(playerList.subList(i * 8, Math.min((i + 1) * 8, playerList.size())));
+    }
+
+    // for mm api after its done
+    // Create a list of maps for players
+    // List<Player> players = new ArrayList<>();
+    // for (int i = 0; i < playerList.size(); i++) {
+    // Long playerId = playerList.get(i);
+    // Player playerData = new Player(playerId,
+    // userService.findById(playerId).getRank());
+    // players.add(playerData);
+    // }
+
+    // // Prepare the payload for the matchmaking API
+    // Map<String, Object> payload = new HashMap<>();
+    // payload.put("tournamentId", id);
+    // payload.put("players", players);
+
+    // // API URL to send player list to matchmaking API
+    // String matchmakingApiUrl = "http://localhost:8080/matchmaking";
+
+    // // Call the matchmaking API to get the split lists of players
+    // List<List<Map<String, Object>>> playerGroups =
+    // restTemplate.postForObject(matchmakingApiUrl, payload, List.class);
+
+    model.addAttribute("tournament", tournamentData);
+    model.addAttribute("playerGroups", playerGroups);
+
+    return "admin/startTournament"; 
   }
 
 }

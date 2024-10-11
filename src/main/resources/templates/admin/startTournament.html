@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Start Tournament</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 th:text="'Start Tournament: ' + ${tournament.name}"></h1>
+      <p th:text="'Date: ' + ${tournament.date}"></p>
+      <p th:text="'Region: ' + ${tournament.region}"></p>
+
+      <!-- Display the 4 lists of players -->
+      <div class="row">
+        <div class="col-md-6" th:each="group, iterStat : ${playerGroups}">
+          <h3 th:text="'Group ' + ${iterStat.index + 1}"></h3>
+          <ul>
+            <li th:each="playerId : ${group}" th:text="'Player ID: ' + ${playerId}"></li>
+          </ul>
+        </div>
+      </div>
+
+      <form action="#" th:action="@{/admin/startTournament/{id}(id=${tournament.id})}" method="post">
+        <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
+        <button type="submit" class="btn btn-primary">Next Round</button>
+      </form>
+    </div>
+  </body>
+</html>

@@ -70,7 +70,7 @@
         <div class="form-group">
           <label for="status">Status</label>
           <select id="status" name="status" class="form-control" required>
-            <option th:selected="${tournament.region == 'Closed'}" value="Closed">Open</option>
+            <option th:selected="${tournament.region == 'Closed'}" value="Closed">Closed</option>
             <option th:selected="${tournament.region == 'Open'}" value="Open">Open</option>
             <option th:selected="${tournament.region == 'Ongoing'}" value="Ongoing">Ongoing</option>
             <option th:selected="${tournament.region == 'Completed'}" value="Completed">Completed</option>

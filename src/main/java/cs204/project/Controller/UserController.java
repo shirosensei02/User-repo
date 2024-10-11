@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,37 +18,32 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
-    @GetMapping("")
-    public String getHomePage(){
-        return "users/home_new";
-    }
+  @GetMapping("")
+  public String getHomePage() {
+    return "users/home_new";
+  }
 
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping("/tournaments")
-    public String getTournaments(Model model) {
-      RestTemplate restTemplate = new RestTemplate();
+  @PreAuthorize("hasRole('USER')")
+  @GetMapping("/tournaments")
+  public String getTournaments(Model model) {
+    RestTemplate restTemplate = new RestTemplate();
 
-      // URL of the tournament service through gateway
-      String tournamentApiUrl = "http://localhost:8080/tournaments";
+    // URL of the tournament service through gateway
+    String tournamentApiUrl = "http://localhost:8080/tournaments";
 
-      // Fetch tournaments as a list of maps (JSON objects)
-      List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
-      // System.out.println(tournaments.toString());
-      
-      // Pass the fetched tournaments to the Thymeleaf view
-      model.addAttribute("tournaments", tournaments);
+    // Fetch tournaments as a list of maps (JSON objects)
+    List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
+    // System.out.println(tournaments.toString());
 
-      return "users/tournaments"; // This returns the tournaments.html Thymeleaf view
-    }
+    // Pass the fetched tournaments to the Thymeleaf view
+    model.addAttribute("tournaments", tournaments);
 
-    @GetMapping("/test")
-    public String getTest(){
-      System.out.println("test works");
-      return "";
-    }
+    return "users/tournaments"; // This returns the tournaments.html Thymeleaf view
+  }
 
-    @GetMapping("/profile")
-    public String getProfilePage(){
-        return "";
-    }
+  @GetMapping("/profile")
+  public String getProfilePage() {
+    return "";
+  }
+
 }
