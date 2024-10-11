@@ -190,4 +190,9 @@ public class AdminController {
     return ResponseEntity.noContent().build(); // Respond with 204 No Content
   }
 
+  @GetMapping("startTournament/{id}")
+  public String startTournament(){
+    
+  }
+
 }

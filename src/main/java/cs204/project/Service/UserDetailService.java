@@ -49,6 +49,7 @@ public class UserDetailService implements UserDetailsService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
+        user.setRank(0);
         repository.save(user);
     }
 
