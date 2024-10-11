@@ -4,17 +4,23 @@
     <title>Start Tournament</title>
   </head>
   <body>
+    <h2>Current Round: <span th:text="${round}"></span></h2>
     <div class="container">
       <h1 th:text="'Start Tournament: ' + ${tournament.name}"></h1>
       <p th:text="'Date: ' + ${tournament.date}"></p>
       <p th:text="'Region: ' + ${tournament.region}"></p>
 
-      <!-- Display the 4 lists of players -->
+      <!-- Display the 4 groups of players -->
       <div class="row">
         <div class="col-md-6" th:each="group, iterStat : ${playerGroups}">
           <h3 th:text="'Group ' + ${iterStat.index + 1}"></h3>
           <ul>
-            <li th:each="playerId : ${group}" th:text="'Player ID: ' + ${playerId}"></li>
+            <!-- Loop through the players in each group -->
+            <li th:each="player : ${group}">
+              <!-- Display the player ID and rank -->
+              <span th:text="'Player ID: ' + ${player.id}"></span> - 
+              <span th:text="'Rank: ' + ${player.rank}"></span>
+            </li>
           </ul>
         </div>
       </div>

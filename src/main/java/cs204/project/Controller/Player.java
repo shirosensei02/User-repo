@@ -1,11 +1,11 @@
-package main.java.cs204.project.Entity;
+package cs204.project.Controller;
 
 public class Player {
   private Long id;
-  private Integer rank;
+  private int rank;
 
   // Constructor
-  public Player(Long id, Integer rank) {
+  public Player(Long id, int rank) {
     this.id = id;
     this.rank = rank;
   }
@@ -15,11 +15,11 @@ public class Player {
     return id;
   }
 
-  public Integer getRank() {
+  public int getRank() {
     return rank;
   }
 
-  public void setRank(Integer rank) {
+  public void setRank(int rank) {
     this.rank = rank;
   }
 }
