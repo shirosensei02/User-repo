@@ -1,36 +1,61 @@
 package cs204.project.model.player;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "players")
 public class Player {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String username;
-    private String password;
-    private String role = "ROLE_USER";
+    protected Long id;
+    @Column(unique = true, nullable = false)
+    protected String username;
+    protected String password;
+    // private Collection<? extends GrantedAuthority> authorities;
+    protected String role = "ROLE_USER";
+    // public enum userRole {
+    //     ADMIN,
+    //     USER
+    // }
+    // private userRole role;
 
     // Default constructor
     public Player() {
     }
 
-    // Constructor with parameters
-    public Player(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public Player(Player player) {
+        this.id = player.getId();
+        this.username = player.getUsername();
+        this.password = player.getPassword();
+        this.role = player.getRole();
+        // this.authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + player.getRole().toString()));
+        // this.authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + player.getRole()));
     }
 
-    public Player(Long id, String username, String password) {
-        this.id = id;
+    // Constructor with parameters
+    // public Player(String username, String password) {
+    //     this.username = username;
+    //     this.password = password;
+    // }
+
+    // public Player(String username, String password, userRole role) {
+    //     this.username = username;
+    //     this.password = password;
+    //     this.role = role;
+    //     this.authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
+    // }
+    public Player(String username, String password, String role) {
         this.username = username;
         this.password = password;
+        this.role = role;
+        // this.authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
     }
+
+    // public Player(Long id, String username, String password) {
+    //     this.id = id;
+    //     this.username = username;
+    //     this.password = password;
+    // }
 
     // Getters and setters
     public Long getId() {
@@ -41,6 +66,7 @@ public class Player {
         this.id = id;
     }
 
+
     public String getUsername() {
         return username;
     }
@@ -48,6 +74,7 @@ public class Player {
     public void setUsername(String username) {
         this.username = username;
     }
+
 
     public String getPassword() {
         return password;
@@ -57,6 +84,10 @@ public class Player {
         this.password = password;
     }
 
+    // public userRole getRole() {
+    //     return role;
+    // }
+
     public String getRole() {
         return role;
     }
@@ -64,4 +95,13 @@ public class Player {
     public void setRole(String role) {
         this.role = role;
     }
+
+    // public void setRole(userRole role) {
+    //     this.role = role;
+    // }
+
+    // @Override
+    // public Collection<? extends GrantedAuthority> getAuthorities() {
+    //     return authorities;
+    // }
 }
