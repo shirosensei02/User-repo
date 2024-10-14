@@ -1,4 +1,4 @@
-package cs204.project.Util;
+package cs204.project.util;
 
 import java.util.Optional;
 
@@ -26,7 +26,7 @@ public class DefaultAdminInitializer implements CommandLineRunner {
         if (!(admin.isPresent())) {
             // Create and save the default admin user
             // Player adminUser = new Player("admin", passwordEncoder.encode("admin123"), userRole.ADMIN);
-            Player adminUser = new Player("admin", passwordEncoder.encode("admin123"), "ADMIN");
+            Player adminUser = new Player("ADMIN", passwordEncoder.encode("admin123"), "ADMIN");
             // Player adminUser = new Player();
             // adminUser.setUsername("admin");
             // adminUser.setPassword(passwordEncoder.encode("admin123")); // Set a default password

@@ -1,7 +1,11 @@
 cs204\project\model\player\Player.class
+cs204\project\controller\PlayerController.class
+cs204\project\model\player\PlayerCustom.class
+cs204\project\util\DefaultAdminInitializer.class
 cs204\project\ProjectApplication.class
 cs204\project\model\player\PlayerService.class
 cs204\project\exception\TournamentIsFullException.class
+cs204\project\security\SecurityConfig.class
 cs204\project\controller\AdminController.class
 cs204\project\controller\SignupController.class
 cs204\project\exception\PlayerNotFoundException.class
@@ -10,3 +14,4 @@ cs204\project\model\player\PlayerRepository.class
 cs204\project\controller\HomeController.class
 cs204\project\exception\PlayerRankOOBException.class
 cs204\project\controller\AuthenticationController.class
+cs204\project\model\player\PlayerServiceImpl.class

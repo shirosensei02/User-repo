@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 // import cs204.project.Entity.CustomUserDetails;
@@ -13,6 +14,7 @@ import cs204.project.model.player.*;
 
 
 @Controller
+// @RequestMapping("/home")
 public class HomeController { 
 
     @GetMapping("/hello")

@@ -1,4 +1,4 @@
-package cs204.project.Security;
+package cs204.project.security;
 
 import java.util.Collection;
 import java.util.Collections;

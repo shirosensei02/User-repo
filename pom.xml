@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>18</java.version> <!-- change to 21 on laptop -->
+		<java.version>21</java.version> <!-- change to 21 on laptop, 18 on Desktop -->
 	</properties>
 	<dependencies>
 		<dependency>

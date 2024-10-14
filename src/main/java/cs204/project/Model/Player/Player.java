@@ -10,9 +10,12 @@ public class Player {
     protected Long id;
     @Column(unique = true, nullable = false)
     protected String username;
+    @Column(nullable = false)
     protected String password;
     // private Collection<? extends GrantedAuthority> authorities;
+    @Column(nullable = false)
     protected String role = "ROLE_USER";
+    // @Enumerated(EnumType.STRING)
     // public enum userRole {
     //     ADMIN,
     //     USER
