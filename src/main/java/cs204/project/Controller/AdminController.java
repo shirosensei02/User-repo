@@ -242,13 +242,24 @@ public class AdminController {
     String matchmakingApiUrl = "http://localhost:8080/matchmaking/first-round";
 
     // Call the matchmaking API to get the split lists of players
-    List<List<Player>> playerGroups = restTemplate.postForObject(matchmakingApiUrl, payload, List.class);
+    // List<List<Player>> playerGroups = restTemplate.postForObject(matchmakingApiUrl, payload, List.class);
 
-    for (List<Player> team : playerGroups){
-      for (Player player : team){
-        System.out.println(player.getId());
+    // Call the matchmaking API and get a raw response
+    List<Map<String, Object>> rawPlayerGroups = restTemplate.postForObject(matchmakingApiUrl, payload, List.class);
+
+    // Manually map the response to List<List<Player>>
+    List<List<Player>> playerGroups = new ArrayList<>();
+    for (Map<String, Object> groupMap : rawPlayerGroups) {
+      List<Player> group = new ArrayList<>();
+      for (Map<String, Object> playerMap : (List<Map<String, Object>>) groupMap.get("players")) {
+        Long playerId = ((Number) playerMap.get("id")).longValue();
+        int rank = (int) playerMap.get("rank");
+        Player player = new Player(playerId, rank);
+        group.add(player);
       }
+      playerGroups.add(group);
     }
+    
     // Add player groups and tournament details to the model
     model.addAttribute("round", round);
     model.addAttribute("tournament", tournamentData);
