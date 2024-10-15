@@ -1,7 +1,6 @@
 package cs204.project.Entity;
 
 import jakarta.persistence.*;
-//import main.java.cs204.project.Entity.User;
 
 @Entity
 @Table(name = "MyUser")

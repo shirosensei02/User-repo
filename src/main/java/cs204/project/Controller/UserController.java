@@ -24,7 +24,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-  
+
   @GetMapping("")
   public String getHomePage(Model model) {
     RestTemplate restTemplate = new RestTemplate();
@@ -48,9 +48,13 @@ public class UserController {
   @GetMapping("/tournaments")
   public String getTournaments(Model model) {
     RestTemplate restTemplate = new RestTemplate();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    CustomUserDetails customUDetails = (CustomUserDetails) authentication.getPrincipal();
+    Long userid = customUDetails.getId();
+
 
     // URL of the tournament service through gateway
-    String tournamentApiUrl = "http://localhost:8080/tournaments/available";
+    String tournamentApiUrl = "http://localhost:8080/tournaments/available/" + userid;
 
     // Fetch tournaments as a list of maps (JSON objects)
     List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);

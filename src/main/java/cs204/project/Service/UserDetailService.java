@@ -1,6 +1,7 @@
 package cs204.project.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -55,5 +56,14 @@ public class UserDetailService implements UserDetailsService {
 
     public Page<User> findAllUsers(Pageable pageable) {
         return repository.findAll(pageable);
+    }
+
+    public User findById(Long id){
+      Optional<User> user = repository.findById(id);
+      return user.isPresent() ? user.get() : null;
+    }
+
+    public void save(User user){
+      repository.save(user);
     }
 }
