@@ -9,10 +9,6 @@
             width: 150px;
         }
         .pagination-container {
-            position: fixed;
-            bottom: 60px; /* Adjust this value if needed */
-            left: 50%;
-            transform: translateX(-50%);
             width: 100%;
             text-align: center;
         }
@@ -48,23 +44,24 @@
                 </tr>
             </tbody>
         </table>
+        <div class="pagination-container">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/user-management(page=${currentPage - 1}, size=50)}">Previous</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                        <a class="page-link" th:href="@{/admin/user-management(page=${i}, size=50)}" th:text="${i + 1}"></a>
+                    </li>
+                    <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/user-management(page=${currentPage + 1}, size=50)}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 
-    <div class="pagination-container">
-        <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
-                    <a class="page-link" th:href="@{/admin/user-management(page=${currentPage - 1}, size=50)}">Previous</a>
-                </li>
-                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                    <a class="page-link" th:href="@{/admin/user-management(page=${i}, size=50)}" th:text="${i + 1}"></a>
-                </li>
-                <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/admin/user-management(page=${currentPage + 1}, size=50)}">Next</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    
 
     <footer class="bg-light text-center py-3" style="color: black;">
         &copy; 2024 CS203. All rights reserved.
