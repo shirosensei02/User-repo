@@ -24,10 +24,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-
-
-
-
+  
   @GetMapping("")
   public String getHomePage(Model model) {
     RestTemplate restTemplate = new RestTemplate();
