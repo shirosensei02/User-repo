@@ -285,16 +285,21 @@ public class AdminController {
       List<List<Map<String, Object>>> rawPlayerGroups = (List<List<Map<String, Object>>>) response.getBody();
 
       // Now iterate through the rawPlayerGroups as expected
-      // List<List<Player>> playerGroups = new ArrayList<>();
+      List<List<User>> userGroups = new ArrayList<>();
       for (List<Map<String, Object>> groupMap : rawPlayerGroups) { // Treat groupMap as List<Map<String, Object>>
         List<Player> group = new ArrayList<>();
+        List<User> userSubGroup = new ArrayList<>();
         for (Map<String, Object> playerMap : groupMap) { // Iterate over the list directly
           Long playerId = ((Number) playerMap.get("id")).longValue();
           int rank = (int) playerMap.get("rank");
           Player player = new Player(playerId, rank);
           group.add(player);
+
+          User user = userService.findById(player.getId());
+          userSubGroup.add(user);
         }
         playerGroups.add(group);
+        userGroups.add(userSubGroup);
       }
 
       // Debugging: Check the final player groups
@@ -303,7 +308,7 @@ public class AdminController {
       // Add player groups and tournament details to the model
       model.addAttribute("round", round);
       model.addAttribute("tournament", tournamentData);
-      model.addAttribute("playerGroups", playerGroups);
+      model.addAttribute("userGroups", userGroups);
 
       return "admin/startTournament"; // Return the view
 
@@ -376,8 +381,11 @@ public class AdminController {
 
       // Process the rawPlayerGroups into List<List<Player>> as in the GET method
       playerGroups = new ArrayList<>();
+      List<List<User>> userGroups = new ArrayList<>();
+
       for (List<Map<String, Object>> groupMap : rawPlayerGroups) {
         List<Player> group = new ArrayList<>();
+        List<User> userSubGroup = new ArrayList<>();
         for (Map<String, Object> playerMap : groupMap) {
           Long playerId = ((Number) playerMap.get("id")).longValue();
           int rank = (int) playerMap.get("rank");
@@ -389,17 +397,19 @@ public class AdminController {
               // .orElseThrow(() -> new RuntimeException("User not found: " + player.getId()));
           user.setRank(player.getRank());
           userService.save(user);
+          userSubGroup.add(user);
 
           group.add(player);
 
         }
+        userGroups.add(userSubGroup);
         playerGroups.add(group);
       }
 
       // Add round, tournament data, and player groups to the model
       model.addAttribute("round", round);
       model.addAttribute("tournament", tournamentData);
-      model.addAttribute("playerGroups", playerGroups);
+      model.addAttribute("userGroups", userGroups);
 
       return "admin/startTournament"; // Return the updated view
 
