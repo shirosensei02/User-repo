@@ -61,6 +61,9 @@ public class UserDetailService implements UserDetailsService {
     public User findById(Long id){
       Optional<User> user = repository.findById(id);
       return user.isPresent() ? user.get() : null;
+    }
 
+    public void save(User user){
+      repository.save(user);
     }
 }

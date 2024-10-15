@@ -87,6 +87,12 @@
 			<version>5.0.0</version> <!-- or the version that matches your setup -->
 			<scope>provided</scope>
 		</dependency>
+    <dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>4.0.1</version> <!-- Use the version appropriate for your project -->
+    <scope>provided</scope>
+</dependency>
 <dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
