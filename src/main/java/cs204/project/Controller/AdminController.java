@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import org.springframework.ui.Model;
 import java.util.List;
@@ -45,6 +48,7 @@ import cs204.project.Controller.Player;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+
 @Controller
 @RequestMapping("/admin")
 @SessionAttributes({ "playerGroups", "tournamentData" })
@@ -54,7 +58,6 @@ public class AdminController {
   private UserDetailService userService;
 
   private RestTemplate restTemplate = new RestTemplate();
-
   // private List<List<Player>> playerGroups;
 
   @GetMapping("")
@@ -62,6 +65,7 @@ public class AdminController {
     return "admin/admin-dashboard";
   }
 
+  @SuppressWarnings("unchecked")
   @GetMapping("/admin-tournaments")
   public String getTournaments(Model model) {
     // RestTemplate restTemplate = new RestTemplate();
@@ -201,72 +205,124 @@ public class AdminController {
   }
 
   @GetMapping("/startTournament/{id}")
-  public String startTournament(@PathVariable Long id, Model model) {
+public String startTournament(@PathVariable Long id, Model model) throws JsonProcessingException {
     // API URL to get tournament details by ID
     String apiUrl = "http://localhost:8080/tournaments/" + id;
+
+    // Log the API URL
+    System.out.println("Fetching tournament data from: " + apiUrl);
 
     // Use RestTemplate to call the API and fetch the tournament details
     RestTemplate restTemplate = new RestTemplate();
     Map<String, Object> tournamentData = restTemplate.getForObject(apiUrl, Map.class);
 
+    // Debugging: Check if the tournament data is retrieved successfully
+    System.out.println("Tournament Data: " + tournamentData);
+
     // Retrieve player list from the tournament
-    // List<Long> playerList = (List<Long>) tournamentData.get("playerList");
     int round = (int) tournamentData.get("round");
     List<?> playerListRaw = (List<?>) tournamentData.get("playerList");
+
+    // Debugging: Check the player list retrieved from tournamentData
+    System.out.println("Raw Player List: " + playerListRaw);
+
     List<Long> playerList = new ArrayList<>();
 
     // Convert Integer to Long if necessary
     for (Object playerIdObj : playerListRaw) {
-      if (playerIdObj instanceof Integer) {
-        playerList.add(((Integer) playerIdObj).longValue()); // Convert Integer to Long
-      } else {
-        playerList.add((Long) playerIdObj); // Cast to Long directly
+        if (playerIdObj instanceof Integer) {
+            playerList.add(((Integer) playerIdObj).longValue()); // Convert Integer to Long
+        } else if (playerIdObj instanceof Long) {
+            playerList.add((Long) playerIdObj); // Cast to Long directly
+        } else {
+            System.out.println("Unexpected player ID type: " + playerIdObj.getClass().getName());
+        }
+    }
 
-      }
-    }
-    // for mm api after its done
-    // Create a list of maps for players
+    // Debugging: Check the final converted player list
+    System.out.println("Converted Player List: " + playerList);
+
+    // Create a list of Player objects
     List<Player> players = new ArrayList<>();
-    for (int i = 0; i < playerList.size(); i++) {
-      Long playerId = playerList.get(i);
-      Player playerData = new Player(playerId, userService.findById(playerId).getRank());
-      players.add(playerData);
+    for (Long playerId : playerList) {
+        Player playerData = new Player(playerId, userService.findById(playerId).getRank());
+        players.add(playerData);
     }
+
+    // Debugging: Check the list of players created
+    System.out.println("Players List: " + players);
 
     // Prepare the payload for the matchmaking API
     Map<String, Object> payload = new HashMap<>();
     payload.put("tournamentId", id);
     payload.put("players", players);
 
+    // Debugging: Log the payload before sending it
+    System.out.println("Payload for Matchmaking API: " + payload);
+
     // API URL to send player list to matchmaking API
     String matchmakingApiUrl = "http://localhost:8080/matchmaking/first-round";
-
-    // Call the matchmaking API to get the split lists of players
-    // List<List<Player>> playerGroups = restTemplate.postForObject(matchmakingApiUrl, payload, List.class);
+    System.out.println("Matchmaking API URL: " + matchmakingApiUrl);
 
     // Call the matchmaking API and get a raw response
-    List<Map<String, Object>> rawPlayerGroups = restTemplate.postForObject(matchmakingApiUrl, payload, List.class);
+    try {
+        // Create the ObjectMapper for JSON serialization
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        // Serialize the payload into a JSON string
+        String jsonPayload = objectMapper.writeValueAsString(payload);
+        System.out.println("Serialized JSON Payload: " + jsonPayload);
 
-    // Manually map the response to List<List<Player>>
-    List<List<Player>> playerGroups = new ArrayList<>();
-    for (Map<String, Object> groupMap : rawPlayerGroups) {
-      List<Player> group = new ArrayList<>();
-      for (Map<String, Object> playerMap : (List<Map<String, Object>>) groupMap.get("players")) {
-        Long playerId = ((Number) playerMap.get("id")).longValue();
-        int rank = (int) playerMap.get("rank");
-        Player player = new Player(playerId, rank);
-        group.add(player);
+        // Set the headers with Content-Type as application/json
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        
+        // Create the HttpEntity containing the headers and the JSON payload
+        HttpEntity<String> entity = new HttpEntity<>(jsonPayload, headers);
+        
+        // Send the POST request with the correct headers
+        ResponseEntity<List> response = restTemplate.exchange(
+            matchmakingApiUrl, 
+            HttpMethod.POST, 
+            entity, 
+            List.class
+        );
+
+        // Debugging: Log the raw response from the matchmaking API
+        System.out.println("Raw Response from Matchmaking API: " + response);
+
+       // Get the response body and cast it as a List<List<Map<String, Object>>>
+      List<List<Map<String, Object>>> rawPlayerGroups = (List<List<Map<String, Object>>>) response.getBody();
+
+      // Now iterate through the rawPlayerGroups as expected
+      List<List<Player>> playerGroups = new ArrayList<>();
+      for (List<Map<String, Object>> groupMap : rawPlayerGroups) {  // Treat groupMap as List<Map<String, Object>>
+          List<Player> group = new ArrayList<>();
+          for (Map<String, Object> playerMap : groupMap) {  // Iterate over the list directly
+              Long playerId = ((Number) playerMap.get("id")).longValue();
+              int rank = (int) playerMap.get("rank");
+              Player player = new Player(playerId, rank);
+              group.add(player);
+          }
+          playerGroups.add(group);
       }
-      playerGroups.add(group);
-    }
-    
-    // Add player groups and tournament details to the model
-    model.addAttribute("round", round);
-    model.addAttribute("tournament", tournamentData);
-    model.addAttribute("playerGroups", playerGroups);
 
-    return "admin/startTournament"; // return the startTournament Thymeleaf view
-  }
+        // Debugging: Check the final player groups
+        System.out.println("Final Player Groups: " + playerGroups);
+
+        // Add player groups and tournament details to the model
+        model.addAttribute("round", round);
+        model.addAttribute("tournament", tournamentData);
+        model.addAttribute("playerGroups", playerGroups);
+
+        return "admin/startTournament"; // Return the view
+
+    } catch (JsonProcessingException e) {
+        // Handle JSON processing exception
+        e.printStackTrace();
+        return "error"; // You can redirect to an error page if necessary
+    }
+}
 
   @PostMapping("/startTournament/{id}")
   public String nextRound(@PathVariable Long id,
