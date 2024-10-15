@@ -94,7 +94,7 @@
 
                     <!-- Button to join the tournament -->
                     <div class="d-flex justify-content-end">
-                      <form th:action="@{/tournaments/join}" method="post">
+                      <form th:action="@{/user/tournaments/join}" method="post">
                         <input type="hidden" name="id" th:value="${tournament['id']}" />
                         <button class="btn btn-outline-primary btn-lg" type="submit">Join</button>
                       </form>

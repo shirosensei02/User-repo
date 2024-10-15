@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,9 +13,50 @@
     <!-- Navbar -->
     <div th:replace="users/navbar :: navbar"></div>
 
-    <!-- Main content -->
+    <!-- Header -->
     <div class="container mt-4 flex-grow-1">
-        <h3 class="text-center mb-4">Homepage</h3>  
+        <h3 class="text-center mb-4">Homepage</h3>
+
+        <!-- Upcoming Tournaments Section -->
+        <div class="container">
+            <h5 class="text-center mb-4">Upcoming Tournaments</h5>
+
+            <!-- Centralize and widen the tournament cards -->
+            <div class="row justify-content-center" th:if="${tournaments != null}">
+                <!-- Iterate over the list of tournaments -->
+                <div class="col-md-8 mb-4" th:each="tournament : ${tournaments}">
+                    <div class="card h-100 border-primary shadow-sm">
+                        <div class="card-body">
+                            <!-- Display tournament name as the main card title -->
+                            <h5 class="card-title" th:text="${tournament['name']}">Tournament Name</h5>
+
+                            <!-- Display tournament rank range -->
+                            <h6 class="card-text"
+                                th:text="'Rank Range: ' + ${tournament['rankRange'][0]} + ' - ' + ${tournament['rankRange'][1]}">
+                            </h6>
+
+                            <!-- Display tournament date -->
+                            <h6 class="card-text" th:text="'Date: ' + ${tournament.date}"></h6>
+
+                            <!-- Optional: Button to join the tournament -->
+                            <!-- 
+                            <div class="d-flex justify-content-end">
+                                <form th:action="@{/user/tournaments/join}" method="post">
+                                    <input type="hidden" name="id" th:value="${tournament['id']}" />
+                                    <button class="btn btn-outline-primary btn-lg" type="submit">Join</button>
+                                </form>
+                            </div> 
+                            -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- In case no tournaments are available -->
+            <p th:if="${#lists.isEmpty(tournaments)}" class="text-center mt-4">
+                No tournaments available at the moment.
+            </p>
+        </div>
     </div>
 
     <!-- Footer -->
