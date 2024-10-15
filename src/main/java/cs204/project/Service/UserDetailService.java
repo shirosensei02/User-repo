@@ -63,4 +63,8 @@ public class UserDetailService implements UserDetailsService {
       return user.isPresent() ? user.get() : null;
 
     }
+
+    public Page<User> searchByUsername(String username, Pageable pageable) {
+        return repository.findByUsernameContainingIgnoreCase(username, pageable);
+    }
 }

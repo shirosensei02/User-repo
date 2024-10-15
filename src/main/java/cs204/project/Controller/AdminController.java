@@ -138,18 +138,27 @@ public class AdminController {
 
   @GetMapping("/user-management")
   public String getUsers(
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "50") int size,
-      Model model) {
+    @RequestParam(defaultValue = "0") int page,
+    @RequestParam(defaultValue = "50") int size,
+    @RequestParam(required = false) String username,
+    Model model) {
+    
     Pageable pageable = PageRequest.of(page, size);
-    Page<User> userPage = userService.findAllUsers(pageable);
+    Page<User> userPage;
+
+    if (username != null && !username.isEmpty()) {
+        userPage = userService.searchByUsername(username, pageable); // Modify your service method to search
+    } else {
+        userPage = userService.findAllUsers(pageable);
+    }
 
     model.addAttribute("users", userPage.getContent());
     model.addAttribute("currentPage", page);
     model.addAttribute("totalPages", userPage.getTotalPages());
+    model.addAttribute("username", username); // Add the search term to the model
 
     return "admin/user-management";
-  }
+}
 
   @GetMapping("/updateTournament/{id}")
   public String getUpdateTournament(@PathVariable("id") Long id, Model model) {

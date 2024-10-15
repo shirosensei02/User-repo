@@ -25,6 +25,12 @@
 
     <div class="container mt-4">
         <h2 class="mb-4">Registered Users</h2>
+        <form class="form-inline mb-4" method="get" action="/admin/user-management">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search by username" name="username" th:value="${username}">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </form>
         <table class="table table-bordered">
             <thead>
                 <tr>
