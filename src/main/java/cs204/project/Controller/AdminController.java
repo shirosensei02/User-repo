@@ -49,7 +49,7 @@ public class AdminController {
 
   @GetMapping("")
   public String getDashboard() {
-    //return "admin/admin-dashboard";
+    // return "admin/admin-dashboard";
     return "redirect:/admin/admin-tournaments";
   }
 
@@ -126,18 +126,18 @@ public class AdminController {
 
   @GetMapping("/user-management")
   public String getUsers(
-    @RequestParam(defaultValue = "0") int page,
-    @RequestParam(defaultValue = "50") int size,
-    @RequestParam(required = false) String username,
-    Model model) {
-    
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "50") int size,
+      @RequestParam(required = false) String username,
+      Model model) {
+
     Pageable pageable = PageRequest.of(page, size);
     Page<User> userPage;
 
     if (username != null && !username.isEmpty()) {
-        userPage = userService.searchByUsername(username, pageable); // Modify your service method to search
+      userPage = userService.searchByUsername(username, pageable); // Modify your service method to search
     } else {
-        userPage = userService.findAllUsers(pageable);
+      userPage = userService.findAllUsers(pageable);
     }
 
     model.addAttribute("users", userPage.getContent());
@@ -146,7 +146,7 @@ public class AdminController {
     model.addAttribute("username", username); // Add the search term to the model
 
     return "admin/user-management";
-}
+  }
 
   @GetMapping("/updateTournament/{id}")
   public String getUpdateTournament(@PathVariable("id") Long id, Model model) {
@@ -207,6 +207,8 @@ public class AdminController {
   @GetMapping("/startTournament/{id}")
   public String startTournament(@PathVariable Long id, Model model)
       throws JsonProcessingException {
+
+    playerGroups = new ArrayList<>();
     // API URL to get tournament details by ID
     String apiUrl = "http://localhost:8080/tournaments/" + id;
 
@@ -315,6 +317,12 @@ public class AdminController {
       // Debugging: Check the final player groups
       // System.out.println("Final Player Groups: " + playerGroups);
 
+      // for (List<User> groups : userGroups){
+      //   for (User user : groups){
+      //     System.out.println(user.getUsername());
+      //   }
+      // }
+
       // Add player groups and tournament details to the model
       model.addAttribute("round", round);
       model.addAttribute("tournament", tournamentData);
@@ -342,7 +350,7 @@ public class AdminController {
 
     // Construct the updated tournament data
     Map<String, Object> updatedTournament = new HashMap<>();
-    
+
     updatedTournament.put("id", id);
     updatedTournament.put("name", tournamentData.get("name"));
     updatedTournament.put("date", tournamentData.get("date"));
@@ -352,18 +360,18 @@ public class AdminController {
     updatedTournament.put("playerList", tournamentData.get("playerList"));
     updatedTournament.put("round", round); // Incremented round
 
-    if (round >= 4){
+    if (round >= 4) {
       updatedTournament.put("id", id);
-    updatedTournament.put("name", tournamentData.get("name"));
-    updatedTournament.put("date", tournamentData.get("date"));
-    updatedTournament.put("rankRange", tournamentData.get("rankRange"));
-    updatedTournament.put("status", "Closed");
-    updatedTournament.put("region", tournamentData.get("region"));
-    updatedTournament.put("playerList", tournamentData.get("playerList"));
-    updatedTournament.put("round", round); // Incremented round
-    String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
-    restTemplate.put(tournamentApiUrl, updatedTournament);
-    return "redirect:/admin";
+      updatedTournament.put("name", tournamentData.get("name"));
+      updatedTournament.put("date", tournamentData.get("date"));
+      updatedTournament.put("rankRange", tournamentData.get("rankRange"));
+      updatedTournament.put("status", "Closed");
+      updatedTournament.put("region", tournamentData.get("region"));
+      updatedTournament.put("playerList", tournamentData.get("playerList"));
+      updatedTournament.put("round", round); // Incremented round
+      String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
+      restTemplate.put(tournamentApiUrl, updatedTournament);
+      return "redirect:/admin";
     }
 
     // Send a PUT request to update the tournament
@@ -415,11 +423,12 @@ public class AdminController {
           Long playerId = ((Number) playerMap.get("id")).longValue();
           int rank = (int) playerMap.get("rank");
           Player player = new Player(playerId, rank);
-          
-          //update user rank
+
+          // update user rank
           User user = userService.findById(player.getId());
           // doesnt work need try
-              // .orElseThrow(() -> new RuntimeException("User not found: " + player.getId()));
+          // .orElseThrow(() -> new RuntimeException("User not found: " +
+          // player.getId()));
           user.setRank(player.getRank());
           userService.save(user);
           userSubGroup.add(user);
@@ -438,7 +447,7 @@ public class AdminController {
 
       return "admin/startTournament"; // Return the updated view
 
-    } catch (JsonProcessingException e ) {
+    } catch (JsonProcessingException e) {
       // Handle JSON processing exception
       e.printStackTrace();
       return "/error";

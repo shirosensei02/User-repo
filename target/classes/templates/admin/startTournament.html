@@ -12,20 +12,24 @@
 
       <!-- Display the 4 groups of players -->
       <div class="row">
-        <div class="col-md-6" th:each="group, iterStat : ${playerGroups}">
+        <div class="col-md-6" th:each="group, iterStat : ${userGroups}">
           <h3 th:text="'Group ' + ${iterStat.index + 1}"></h3>
           <ul>
             <!-- Loop through the players in each group -->
             <li th:each="player : ${group}">
               <!-- Display the player ID and rank -->
-              <span th:text="'Player ID: ' + ${player.id}"></span> - 
+              <span th:text="'Player name: ' + ${player.username}"></span> -
               <span th:text="'Rank: ' + ${player.rank}"></span>
             </li>
           </ul>
         </div>
       </div>
 
-      <form action="#" th:action="@{/admin/startTournament/{id}(id=${tournament.id})}" method="post">
+      <form
+        action="#"
+        th:action="@{/admin/startTournament/{id}(id=${tournament.id})}"
+        method="post"
+      >
         <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
         <button type="submit" class="btn btn-primary">Next Round</button>
       </form>
