@@ -342,6 +342,7 @@ public class AdminController {
 
     // Construct the updated tournament data
     Map<String, Object> updatedTournament = new HashMap<>();
+    
     updatedTournament.put("id", id);
     updatedTournament.put("name", tournamentData.get("name"));
     updatedTournament.put("date", tournamentData.get("date"));
@@ -350,6 +351,20 @@ public class AdminController {
     updatedTournament.put("region", tournamentData.get("region"));
     updatedTournament.put("playerList", tournamentData.get("playerList"));
     updatedTournament.put("round", round); // Incremented round
+
+    if (round >= 4){
+      updatedTournament.put("id", id);
+    updatedTournament.put("name", tournamentData.get("name"));
+    updatedTournament.put("date", tournamentData.get("date"));
+    updatedTournament.put("rankRange", tournamentData.get("rankRange"));
+    updatedTournament.put("status", "Closed");
+    updatedTournament.put("region", tournamentData.get("region"));
+    updatedTournament.put("playerList", tournamentData.get("playerList"));
+    updatedTournament.put("round", round); // Incremented round
+    String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
+    restTemplate.put(tournamentApiUrl, updatedTournament);
+    return "redirect:/admin";
+    }
 
     // Send a PUT request to update the tournament
     String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
@@ -423,10 +438,10 @@ public class AdminController {
 
       return "admin/startTournament"; // Return the updated view
 
-    } catch (JsonProcessingException e) {
+    } catch (JsonProcessingException e ) {
       // Handle JSON processing exception
       e.printStackTrace();
-      return "error"; // You can redirect to an error page if necessary
+      return "/error";
     }
   }
 
