@@ -66,4 +66,8 @@ public class UserDetailService implements UserDetailsService {
     public void save(User user){
       repository.save(user);
     }
+
+    public Page<User> searchByUsername(String username, Pageable pageable) {
+        return repository.findByUsernameContainingIgnoreCase(username, pageable);
+    }
 }
