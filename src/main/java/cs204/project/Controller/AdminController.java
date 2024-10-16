@@ -49,7 +49,8 @@ public class AdminController {
 
   @GetMapping("")
   public String getDashboard() {
-    return "admin/admin-dashboard";
+    //return "admin/admin-dashboard";
+    return "redirect:/admin/admin-tournaments";
   }
 
   @SuppressWarnings("unchecked")

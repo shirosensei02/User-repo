@@ -12,10 +12,12 @@
 </head>
 
 <body>
+    <div th:replace="admin/admin-header :: admin-header"></div>
+    
     <div class="text-center">
         <h1 class="mb-4">Tournament List</h1>
     </div>
-    <div th:replace="admin/admin-header :: admin-header"></div>
+
     <div class="container mt-5">
         <a th:href="@{/admin/addTournament}" class="btn btn-success mb-4">Add Tournament</a>
 
