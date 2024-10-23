@@ -45,7 +45,7 @@ public class AdminService {
       Map<String, Object> tournament = restTemplate.getForObject(tournamentApiUrl, Map.class);
       return tournament;
     } catch (Exception e) {
-      throw new Exception(e);
+      throw e;
     }
 
   }
@@ -65,7 +65,7 @@ public class AdminService {
     try {
       restTemplate.exchange(tournamentApiUrl, HttpMethod.POST, request, String.class);
     } catch (Exception e) {
-      throw new Exception(e);
+      throw e;
     }
   }
 
@@ -75,7 +75,7 @@ public class AdminService {
       String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
       restTemplate.put(tournamentApiUrl, updatedTournament);
     } catch (Exception e) {
-      throw new Exception(e);
+      throw e;
     }
   }
 
@@ -87,7 +87,7 @@ public class AdminService {
       // Call the tournament API to delete the tournament
       restTemplate.delete(tournamentApiUrl);
     } catch (Exception e) {
-      throw new Exception(e);
+      throw e;
     }
   }
 
@@ -116,18 +116,37 @@ public class AdminService {
     return players;
   }
 
-  public List<List<Map<String, Object>>> getFirstRoundGroup(Map<String, Object> payload) throws JsonProcessingException{
+  public List<List<Map<String, Object>>> getFirstRoundGroup(Map<String, Object> payload) throws Exception {
     // API URL to send player list to matchmaking API
     String matchmakingApiUrl = "http://localhost:8080/matchmaking/first-round";
 
     // Call the matchmaking API and get a raw response
+    try {
+      List<List<Map<String, Object>>> rawPlayerGroups = getRawPlayerGroups(matchmakingApiUrl, payload);
+      return rawPlayerGroups;
+    } catch (Exception e) {
+      throw e;
+    }
+  }
+
+  public List<List<Map<String, Object>>> getNextRoundGroup(Map<String, Object> payload) throws Exception {
+    String matchmakingApiUrl = "http://localhost:8080/matchmaking/next-round";
+
+    try {
+      List<List<Map<String, Object>>> rawPlayerGroups = getRawPlayerGroups(matchmakingApiUrl, payload);
+      return rawPlayerGroups;
+    } catch (Exception e) {
+      throw e;
+    }
+  }
+
+  public List<List<Map<String, Object>>> getRawPlayerGroups(String matchmakingApiUrl, Map<String, Object> payload) throws Exception{
     try {
       // Create the ObjectMapper for JSON serialization
       ObjectMapper objectMapper = new ObjectMapper();
 
       // Serialize the payload into a JSON string
       String jsonPayload = objectMapper.writeValueAsString(payload);
-      // System.out.println("Serialized JSON Payload: " + jsonPayload);
 
       // Set the headers with Content-Type as application/json
       HttpHeaders headers = new HttpHeaders();
@@ -136,18 +155,19 @@ public class AdminService {
       // Create the HttpEntity containing the headers and the JSON payload
       HttpEntity<String> entity = new HttpEntity<>(jsonPayload, headers);
 
-      // Send the POST request with the correct headers
+      // Send the POST request to the matchmaking API and get the response
       ResponseEntity<List> response = restTemplate.exchange(
           matchmakingApiUrl,
           HttpMethod.POST,
           entity,
           List.class);
 
-      // Get the response body and cast it as a List<List<Map<String, Object>>>
-      List<List<Map<String, Object>>> rawPlayerGroups = response.getBody();
+      List<List<Map<String, Object>>> rawPlayerGroups = (List<List<Map<String, Object>>>) response.getBody();
+
       return rawPlayerGroups;
-    } catch (JsonProcessingException e) {
-      throw new JsonProcessingException(e);
+
+    } catch (Exception e) {
+      throw e;
     }
   }
 }
