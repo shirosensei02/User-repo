@@ -276,11 +276,35 @@ public class AdminController {
     // Sort all players based on their placements
     allPlayers.sort(Comparator.comparingInt(p -> (Integer) p.get("placement")));
 
-    // Now split into groups of 4
-    List<List<Map<String, Object>>> groupedPlayers = new ArrayList<>();
-    for (int i = 0; i < allPlayers.size(); i += 4) {
-        int end = Math.min(i + 4, allPlayers.size());
-        groupedPlayers.add(allPlayers.subList(i, end));
+    // Create groups based on placements
+    List<List<Integer>> groups = new ArrayList<>();
+    for (int i = 0; i < 4; i++) {
+        groups.add(new ArrayList<>());
+    }
+
+    // Track counts for each placement
+    Map<Integer, Integer> placementCounts = new HashMap<>();
+    for (Map<String, Object> player : allPlayers) {
+        int placement = (Integer) player.get("placement");
+        placementCounts.put(placement, placementCounts.getOrDefault(placement, 0) + 1);
+    }
+
+    // Distribute players into groups
+    boolean done = false;
+    while (!done) {
+        done = true;
+        for (int placement = 1; placement <= 8; placement++) {
+            if (placementCounts.getOrDefault(placement, 0) > 0) {
+                for (int groupIndex = 0; groupIndex < groups.size(); groupIndex++) {
+                    if (groups.get(groupIndex).size() < 4) { // Allow up to 4 placements in each group
+                        groups.get(groupIndex).add(placement);
+                        placementCounts.put(placement, placementCounts.get(placement) - 1);
+                        done = false;
+                        break; // Break after adding to a group
+                    }
+                }
+            }
+        }
     }
 
     // Send a PUT request to update the tournament
