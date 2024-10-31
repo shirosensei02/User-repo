@@ -272,42 +272,17 @@ public class AdminController {
         allPlayers.add(playerData);
     }
 
-    // Sort all players based on their placements
-    allPlayers.sort(Comparator.comparingInt(p -> (Integer) p.get("placement")));
-
-    // Create a map to hold players by their placements
-    Map<Integer, List<Map<String, Object>>> placementMap = new HashMap<>();
-    for (Map<String, Object> player : allPlayers) {
-        int placement = (Integer) player.get("placement");
-        placementMap.putIfAbsent(placement, new ArrayList<>());
-        placementMap.get(placement).add(player);
-    }
-
-    // Create groups
-    List<List<Integer>> groups = new ArrayList<>();
+    // Create groups for player placements
+    List<List<Map<String, Object>>> groupedPlayers = new ArrayList<>();
     for (int i = 0; i < 4; i++) {
-        groups.add(new ArrayList<>());
+        groupedPlayers.add(new ArrayList<>());
     }
 
-    // Distribute players into groups
-    boolean done = false;
-    while (!done) {
-        done = true;
-        for (int placement = 1; placement <= 8; placement++) {
-            if (placementMap.containsKey(placement) && !placementMap.get(placement).isEmpty()) {
-                for (int groupIndex = 0; groupIndex < groups.size(); groupIndex++) {
-                    if (groups.get(groupIndex).size() < 4) { // Up to 4 distinct placements in each group
-                        // Add the player to the group
-                        groups.get(groupIndex).add(placement);
-                        // Remove the player from the placementMap
-                        placementMap.get(placement).remove(0); // Remove one player from that placement
-                        done = false; // Continue looping until all placements are distributed
-                        break; // Break to avoid adding multiple players from the same placement to one group
-                    }
-                }
-            }
-        }
+    for (int i = 0; i < allPlayers.size(); i++) {
+      int groupIndex = i % 4; // Distribute players into 4 groups in a round-robin fashion
+      groupedPlayers.get(groupIndex).add(allPlayers.get(i));
     }
+
 
     // Send a PUT request to update the tournament
     try {
