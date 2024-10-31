@@ -26,10 +26,12 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span th:text="'Player name: ' + ${player.username}"></span> - 
                                     <span th:text="'Rank: ' + ${player.rank}"></span>
-                                    <select class="form-select" aria-label="Select rank" style="width: 100px;">
+                                    <select class="form-select" aria-label="Select placement" 
+                                        th:name="${'placement_' + player.id}" required>
+                                        <option value="" disabled selected>Select Placement</option>
                                         <option th:each="num : ${#numbers.sequence(1, 8)}" 
-                                                th:value="${player.username}" 
-                                                th:text="${num}"></option>
+                                            th:value="${num}" 
+                                            th:text="${num}"></option>
                                     </select>
                                 </div>
                             </li>
@@ -40,12 +42,10 @@
         </div>
 
         <form
-            action="#"
             th:action="@{/admin/startTournament/{id}(id=${tournament.id})}"
             method="post"
             class="text-center"
         >
-            <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
             <button type="submit" class="btn btn-primary">Next Round</button>
         </form>
     </div>

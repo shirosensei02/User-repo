@@ -1,2 +1,4 @@
-cs204\project\Service\AdminService.class
-cs204\project\Entity\CustomUserDetails.class
+cs204/project/Entity/CustomUserDetails.class
+cs204/project/Service/AdminService.class
+cs204/project/Exception/GlobalExceptionHandler.class
+cs204/project/Controller/Player.class

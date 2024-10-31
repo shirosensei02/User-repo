@@ -179,8 +179,6 @@ public class AdminController {
     return ResponseEntity.noContent().build(); // Respond with 204 No Content
   }
 
-  private List<List<Player>> playerGroups = new ArrayList<>();
-
   @GetMapping("/startTournament/{id}")
   public String startTournament(@PathVariable Long id, Model model) {
 
@@ -223,6 +221,7 @@ public class AdminController {
 
   @PostMapping("/startTournament/{id}")
   public String nextRound(@PathVariable Long id,
+      @RequestParam Map<String, String> placements,
       Model model) {
 
     Map<String, Object> tournamentData = new HashMap<>();
@@ -257,6 +256,33 @@ public class AdminController {
       return "redirect:/admin";
     }
 
+    // Create a list to hold all players and their placements
+    List<Map<String, Object>> allPlayers = new ArrayList<>();
+
+    // Populate all players with their placements
+    for (Map.Entry<String, String> entry : placements.entrySet()) {
+        String playerId = entry.getKey().split("_")[1]; // Extract the player ID
+        String placement = entry.getValue(); // Get the selected placement
+        System.out.println("This is the placement");
+
+        // Create a new map for the player's information
+        Map<String, Object> playerData = new HashMap<>();
+        playerData.put("id", playerId);
+        playerData.put("rank", userService.findById(playerId).getRank());
+        playerData.put("placement", Integer.parseInt(placement)); // Store as integer for sorting
+        allPlayers.add(playerData);
+    }
+
+    // Sort all players based on their placements
+    allPlayers.sort(Comparator.comparingInt(p -> (Integer) p.get("placement")));
+
+    // Now split into groups of 4
+    List<List<Map<String, Object>>> groupedPlayers = new ArrayList<>();
+    for (int i = 0; i < allPlayers.size(); i += 4) {
+        int end = Math.min(i + 4, allPlayers.size());
+        groupedPlayers.add(allPlayers.subList(i, end));
+    }
+
     // Send a PUT request to update the tournament
     try {
       adminService.updateTournament(id, updatedTournament);
@@ -264,7 +290,7 @@ public class AdminController {
       // Prepare the payload for the matchmaking API
       Map<String, Object> payload = new HashMap<>();
       payload.put("tournamentId", id);
-      payload.put("playerGroups", playerGroups);
+      payload.put("playerGroups", groupedPlayers);
       payload.put("round", round);
 
       List<List<Map<String, Object>>> rawPlayerGroups = adminService.getNextRoundGroup(payload);
