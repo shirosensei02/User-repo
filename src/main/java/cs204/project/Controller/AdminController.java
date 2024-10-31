@@ -276,17 +276,18 @@ public class AdminController {
     // Sort all players based on their placements
     allPlayers.sort(Comparator.comparingInt(p -> (Integer) p.get("placement")));
 
-    // Create groups based on placements
+    // Create a map to hold players by their placements
+    Map<Integer, List<Map<String, Object>>> placementMap = new HashMap<>();
+    for (Map<String, Object> player : allPlayers) {
+        int placement = (Integer) player.get("placement");
+        placementMap.putIfAbsent(placement, new ArrayList<>());
+        placementMap.get(placement).add(player);
+    }
+
+    // Create groups
     List<List<Integer>> groups = new ArrayList<>();
     for (int i = 0; i < 4; i++) {
         groups.add(new ArrayList<>());
-    }
-
-    // Track counts for each placement
-    Map<Integer, Integer> placementCounts = new HashMap<>();
-    for (Map<String, Object> player : allPlayers) {
-        int placement = (Integer) player.get("placement");
-        placementCounts.put(placement, placementCounts.getOrDefault(placement, 0) + 1);
     }
 
     // Distribute players into groups
@@ -294,13 +295,15 @@ public class AdminController {
     while (!done) {
         done = true;
         for (int placement = 1; placement <= 8; placement++) {
-            if (placementCounts.getOrDefault(placement, 0) > 0) {
+            if (placementMap.containsKey(placement) && !placementMap.get(placement).isEmpty()) {
                 for (int groupIndex = 0; groupIndex < groups.size(); groupIndex++) {
-                    if (groups.get(groupIndex).size() < 4) { // Allow up to 4 placements in each group
+                    if (groups.get(groupIndex).size() < 4) { // Up to 4 distinct placements in each group
+                        // Add the player to the group
                         groups.get(groupIndex).add(placement);
-                        placementCounts.put(placement, placementCounts.get(placement) - 1);
-                        done = false;
-                        break; // Break after adding to a group
+                        // Remove the player from the placementMap
+                        placementMap.get(placement).remove(0); // Remove one player from that placement
+                        done = false; // Continue looping until all placements are distributed
+                        break; // Break to avoid adding multiple players from the same placement to one group
                     }
                 }
             }
