@@ -263,12 +263,11 @@ public class AdminController {
     for (Map.Entry<String, String> entry : placements.entrySet()) {
         String playerId = entry.getKey().split("_")[1]; // Extract the player ID
         String placement = entry.getValue(); // Get the selected placement
-        System.out.println("This is the placement");
 
         // Create a new map for the player's information
         Map<String, Object> playerData = new HashMap<>();
         playerData.put("id", playerId);
-        playerData.put("rank", userService.findById(playerId).getRank());
+        playerData.put("rank", userService.findByUsername(playerId).getRank());
         playerData.put("placement", Integer.parseInt(placement)); // Store as integer for sorting
         allPlayers.add(playerData);
     }

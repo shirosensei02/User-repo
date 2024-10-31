@@ -63,6 +63,11 @@ public class UserDetailService implements UserDetailsService {
       return user.isPresent() ? user.get() : null;
     }
 
+    public User findByUsername(String username){
+        Optional<User> user = repository.findByUsername(username);
+        return user.isPresent() ? user.get() : null;
+    }
+
     public void save(User user){
       repository.save(user);
     }
