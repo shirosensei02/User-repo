@@ -24,6 +24,7 @@ import cs204.project.Service.UserDetailService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.springframework.ui.Model;
@@ -218,13 +219,32 @@ public class AdminController {
     model.addAttribute("userGroups", userGroups);
 
     return "admin/startTournament"; // Return the view
-
   }
 
   @PostMapping("/startTournament/{id}")
-  public String nextRound(@PathVariable Long id,
-      Model model) {
+  public String nextRound(@PathVariable Long id, @RequestParam("groupRanks") String groupRanksJson, Model model) {
 
+    // Initialize ObjectMapper
+    ObjectMapper objectMapper = new ObjectMapper();
+    //List<List<Player>> playerGroups = new ArrayList<>();
+
+    try {
+      // Parse the JSON string into a list of lists of maps
+      playerGroups = objectMapper.readValue(groupRanksJson, new TypeReference<>() {
+      });
+    } catch (Exception e) {
+      System.out.println("Error parsing groupRanksJson: " + e.getMessage());
+      // Handle error (e.g., return an error view or message)
+    }
+
+    for (List<Player> list : playerGroups) {
+      for (Player player : list) {
+        System.out.print("Player: " + player.getId() + " ");
+      }
+      System.out.println();
+    }
+
+    // Get Tournament Details
     Map<String, Object> tournamentData = new HashMap<>();
     try {
       tournamentData = adminService.getTournamentById(id);
@@ -268,14 +288,14 @@ public class AdminController {
       payload.put("round", round);
 
       List<List<Map<String, Object>>> rawPlayerGroups = adminService.getNextRoundGroup(payload);
-      
+
       List<List<User>> userGroups = getUserGroups(rawPlayerGroups);
-      
+
       // Add round, tournament data, and player groups to the model
       model.addAttribute("round", round);
       model.addAttribute("tournament", tournamentData);
       model.addAttribute("userGroups", userGroups);
-      
+
     } catch (Exception e) {
       System.out.println(e.getMessage());
       // return "error"

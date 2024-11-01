@@ -1,38 +1,133 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
+
+<head>
     <title>Start Tournament</title>
-  </head>
-  <body>
-    <h2>Current Round: <span th:text="${round}"></span></h2>
-    <div class="container">
-      <h1 th:text="'Start Tournament: ' + ${tournament.name}"></h1>
-      <p th:text="'Date: ' + ${tournament.date}"></p>
-      <p th:text="'Region: ' + ${tournament.region}"></p>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom styling for the dropdown */
+        .form-select-custom {
+            width: 100px;
+            padding: 6px;
+            border-radius: 20px;
+            background-color: #f0f2f5;
+            color: #333;
+            border: 1px solid #dcdfe3;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-      <!-- Display the 4 groups of players -->
-      <div class="row">
-        <div class="col-md-6" th:each="group, iterStat : ${userGroups}">
-          <h3 th:text="'Group ' + ${iterStat.index + 1}"></h3>
-          <ul>
-            <!-- Loop through the players in each group -->
-            <li th:each="player : ${group}">
-              <!-- Display the player ID and rank -->
-              <span th:text="'Player name: ' + ${player.username}"></span> -
-              <span th:text="'Rank: ' + ${player.rank}"></span>
-            </li>
-          </ul>
+        .form-select-custom:focus,
+        .form-select-custom:hover {
+            background-color: #e2e6ea;
+            border-color: #a5b1c2;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            outline: none;
+        }
+
+        .form-select-custom option {
+            background-color: #ffffff;
+            color: #495057;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4" th:text="'Start Tournament: ' + ${tournament.name}"></h1>
+        <h2 class="text-center mb-4">Current Round: <span th:text="${round}"></span></h2>
+        <div class="text-center mb-4">
+            <p th:text="'Date: ' + ${tournament.date}"></p>
+            <p th:text="'Region: ' + ${tournament.region}"></p>
         </div>
-      </div>
 
-      <form
-        action="#"
-        th:action="@{/admin/startTournament/{id}(id=${tournament.id})}"
-        method="post"
-      >
-        <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
-        <button type="submit" class="btn btn-primary">Next Round</button>
-      </form>
+        <!-- Display the 4 groups of players in cards -->
+        <div class="row">
+            <div class="col-md-6 mb-4" th:each="group, iterStat : ${userGroups}">
+                <div class="card">
+                    <div class="card-header text-center" th:text="'Group ' + ${iterStat.index + 1}"></div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <!-- Loop through the players in each group -->
+                            <li class="list-group-item" th:each="player : ${group}">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span th:text="'Player name:  ' + ${player.username}"></span>
+                                    <span th:text="'Rank: ' + ${player.rank}"></span>
+                                    <select class="form-select-custom player-select" aria-label="Select rank"
+                                        th:data-group-id="${iterStat.index}" th:data-player-id="${player.username}"
+                                        th:data-player-rank="${player.rank}">
+                                        <option th:each="num : ${#numbers.sequence(1, 8)}" th:value="${num}"
+                                            th:text="${num}"></option>
+                                    </select>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form action="#" th:action="@{/admin/startTournament/{id}(id=${tournament.id})}" method="post"
+            class="text-center" onsubmit="return collectPlayerRanks()">
+            <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
+
+            <!-- Hidden fields to store player ranks per group -->
+            <input type="hidden" name="groupRanks" id="groupRanks" />
+
+            <button type="submit" class="btn btn-primary">Next Round</button>
+        </form>
     </div>
-  </body>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function collectPlayerRanks() {
+            const groups = [];
+
+            // Gather selected ranks for each player in each group
+            document.querySelectorAll('.player-select').forEach(select => {
+                const groupId = parseInt(select.getAttribute('data-group-id'), 10); // Convert to integer
+                const playerId = select.getAttribute('data-player-id');
+                const playerRank = select.getAttribute('data-player-rank');
+                const position = select.value;
+
+                // Ensure each groupId has an array in the groups array
+                if (!groups[groupId]) {
+                    groups[groupId] = [];
+                }
+
+                groups[groupId].push({ playerId, playerRank, position });
+            });
+
+            // Sort each group by rank
+            groups.forEach(group => {
+                group.sort((a, b) => a.position - b.position);
+            });
+
+            //Remove the position attribute from each object
+            groups.forEach(group => {
+                group.forEach(player => {
+                    delete player.position;
+                });
+            });
+
+            // Convert groups array to JSON
+            const jsonString = JSON.stringify(groups);
+
+            // Print JSON string to the console
+            alert("Group Ranks JSON: " + jsonString);
+
+            // Set it to the hidden input field
+            document.getElementById('groupRanks').value = jsonString;
+
+            return true; // Allow form submission
+        }
+    </script>
+
+</body>
+
 </html>
