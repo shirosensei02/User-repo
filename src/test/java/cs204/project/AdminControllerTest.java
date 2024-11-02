@@ -4,6 +4,7 @@ import cs204.project.Controller.AdminController;
 import cs204.project.Entity.User;
 import cs204.project.Service.AdminService;
 import cs204.project.Service.UserDetailService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import java.util.*;
 
@@ -39,14 +41,12 @@ public class AdminControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    // Test for getDashboard()
     @Test
     public void testGetDashboard() {
         String result = adminController.getDashboard();
         assertEquals("redirect:/admin/admin-tournaments", result);
     }
 
-    // Test for getTournaments()
     @Test
     public void testGetTournaments() {
         List<Map<String, Object>> tournaments = new ArrayList<>();
@@ -63,9 +63,8 @@ public class AdminControllerTest {
         assertEquals("admin/admin-tournaments", result);
     }
 
-    // Test for addTournament()
     @Test
-    public void testAddTournament() {
+    public void testAddTournament() throws Exception{
         String name = "Test Tournament";
         String datetime = "2024-01-01T10:00:00";
         int minRank = 1;
@@ -79,7 +78,6 @@ public class AdminControllerTest {
         assertEquals("redirect:/admin/admin-tournaments", result);
     }
 
-    // Test for getUsers()
     @Test
     public void testGetUsers() {
         int page = 0;
@@ -102,9 +100,8 @@ public class AdminControllerTest {
         assertEquals("admin/user-management", result);
     }
 
-    // Test for getUpdateTournament()
     @Test
-    public void testGetUpdateTournament() {
+    public void testGetUpdateTournament() throws Exception{
         Long tournamentId = 1L;
         Map<String, Object> tournament = new HashMap<>();
         tournament.put("id", tournamentId);
@@ -118,9 +115,8 @@ public class AdminControllerTest {
         assertEquals("admin/updateTournament", result);
     }
 
-    // Test for updateTournament()
     @Test
-    public void testUpdateTournament() {
+    public void testUpdateTournament() throws Exception{
         Long tournamentId = 1L;
         String name = "Updated Tournament";
         String datetime = "2024-01-01T10:00:00";
@@ -135,9 +131,8 @@ public class AdminControllerTest {
         assertEquals("redirect:/admin/admin-tournaments", result);
     }
 
-    // Test for deleteTournament()
     @Test
-    public void testDeleteTournament() {
+    public void testDeleteTournament() throws Exception{
         Long tournamentId = 1L;
 
         ResponseEntity<Void> response = adminController.deleteTournament(tournamentId);
