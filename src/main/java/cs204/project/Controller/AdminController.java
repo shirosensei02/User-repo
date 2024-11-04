@@ -71,12 +71,12 @@ public class AdminController {
     return "admin/admin-tournaments"; // This returns the tournaments.html Thymeleaf view
   }
 
-  @GetMapping("/addTournament")
+  @GetMapping("/tournament")
   public String showAddTournamentPage(Model model) {
     return "admin/addTournament";
   }
 
-  @PostMapping("/addTournament")
+  @PostMapping("/tournament")
   public String addTournament(
       @RequestParam String name,
       @RequestParam String datetime,
@@ -126,7 +126,7 @@ public class AdminController {
     return "admin/user-management";
   }
 
-  @GetMapping("/updateTournament/{id}")
+  @GetMapping("/tournament/{id}")
   public String getUpdateTournament(@PathVariable("id") Long id, Model model) {
 
     try {
@@ -142,7 +142,7 @@ public class AdminController {
   }
 
   // Handle the form submission for updating the tournament
-  @PostMapping("/updateTournament")
+  @PutMapping("/tournament/{id}")
   public String updateTournament(
       @RequestParam Long id,
       @RequestParam String name,
@@ -181,7 +181,7 @@ public class AdminController {
 
   private List<List<Player>> playerGroups = new ArrayList<>();
 
-  @GetMapping("/startTournament/{id}")
+  @GetMapping("/tournament-start/{id}")
   public String startTournament(@PathVariable Long id, Model model) {
 
     Map<String, Object> tournamentData = new HashMap<>();
@@ -221,7 +221,7 @@ public class AdminController {
 
   }
 
-  @PostMapping("/startTournament/{id}")
+  @PostMapping("/tournament-start/{id}")
   public String nextRound(@PathVariable Long id,
       Model model) {
 

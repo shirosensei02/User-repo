@@ -27,7 +27,7 @@
 
       <form
         action="#"
-        th:action="@{/admin/startTournament/{id}(id=${tournament.id})}"
+        th:action="@{/admin/tournament-start/{id}(id=${tournament.id})}"
         method="post"
       >
         <input type="hidden" name="tournamentId" th:value="${tournament.id}" />

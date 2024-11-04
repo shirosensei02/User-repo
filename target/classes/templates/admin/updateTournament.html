@@ -16,7 +16,7 @@
       <h1 class="mb-4">Update Tournament</h1>
 
       <!-- Form pre-populated with tournament data -->
-      <form th:action="@{/admin/updateTournament}" method="post">
+      <form th:action="@{/admin/tournament/{id}(id=${tournament.id})}" method="put">
         <input type="hidden" name="id" th:value="${tournament.id}" />
 
         <div class="form-group">
