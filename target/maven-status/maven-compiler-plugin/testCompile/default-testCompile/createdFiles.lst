@@ -1,1 +1,5 @@
 cs204\project\ProjectApplicationTests.class
+cs204\project\AdminControllerTest.class
+cs204\project\Controller\AuthenticationControllerTest.class
+cs204\project\Controller\SignupControllerTest.class
+cs204\project\AuthenticationControllerTest.class

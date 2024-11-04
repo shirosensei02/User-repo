@@ -10,6 +10,7 @@ cs204\project\Controller\HomeController.class
 cs204\project\Entity\User.class
 cs204\project\Entity\CustomUserDetails.class
 cs204\project\Controller\AuthenticationController.class
+cs204\project\Controller\AdminController$1.class
 cs204\project\Controller\SignupController.class
 cs204\project\Repo\UserRepository.class
 cs204\project\Service\UserDetailService.class
