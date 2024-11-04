@@ -69,7 +69,7 @@
             </div>
         </div>
 
-        <form action="#" th:action="@{/admin/startTournament/{id}(id=${tournament.id})}" method="post"
+        <form action="#" th:action="@{/admin/tournament-start/{id}(id=${tournament.id})}" method="post"
             class="text-center" onsubmit="return collectPlayerRanks()">
             <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
 
