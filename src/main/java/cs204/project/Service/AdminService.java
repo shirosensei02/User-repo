@@ -29,8 +29,8 @@ public class AdminService {
 
   public List<Map<String, Object>> getAllTournaments() {
     // URL of the tournament service through gateway
-    String tournamentApiUrl = "http://localhost:8080/tournaments";
-    // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments";
+    // String tournamentApiUrl = "http://localhost:8080/tournaments";
+    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments";
 
     // Fetch tournaments as a list of maps (JSON objects)
     List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
@@ -41,8 +41,8 @@ public class AdminService {
   public Map<String, Object> getTournamentById(Long id) throws Exception {
 
     // Fetch the tournament data by ID
-    String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
-    // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
+    // String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
+    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
     try {
       Map<String, Object> tournament = restTemplate.getForObject(tournamentApiUrl, Map.class);
       return tournament;
@@ -61,8 +61,8 @@ public class AdminService {
     HttpEntity<Map<String, Object>> request = new HttpEntity<>(tournamentData, headers);
 
     // URL of the Tournament API
-    String tournamentApiUrl = "http://localhost:8080/tournaments";
-    // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments";
+    // String tournamentApiUrl = "http://localhost:8080/tournaments";
+    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments";
 
     // Send POST request to the Tournament API
     try {
@@ -75,8 +75,8 @@ public class AdminService {
   public void updateTournament(Long id, Map<String, Object> updatedTournament) throws Exception {
     try {
       // Send a PUT request to update the tournament
-      String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
-      // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
+      // String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
+      String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
       restTemplate.put(tournamentApiUrl, updatedTournament);
     } catch (Exception e) {
       throw e;
@@ -86,8 +86,8 @@ public class AdminService {
   public void deleteTournament(Long id) throws Exception {
     try {
       // URL of the tournament service through gateway
-      String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
-      // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
+      // String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
+      String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
 
       // Call the tournament API to delete the tournament
       restTemplate.delete(tournamentApiUrl);
@@ -123,8 +123,8 @@ public class AdminService {
 
   public List<List<Map<String, Object>>> getFirstRoundGroup(Map<String, Object> payload) throws Exception {
     // API URL to send player list to matchmaking API
-    String matchmakingApiUrl = "http://localhost:8080/matchmaking/first-round";
-    // String matchmakingApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/first-round";
+    // String matchmakingApiUrl = "http://localhost:8080/matchmaking/first-round";
+    String matchmakingApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/matchmaking/first-round";
 
     // Call the matchmaking API and get a raw response
     try {
@@ -136,8 +136,8 @@ public class AdminService {
   }
 
   public List<List<Map<String, Object>>> getNextRoundGroup(Map<String, Object> payload) throws Exception {
-    String matchmakingApiUrl = "http://localhost:8080/matchmaking/next-round";
-    // String matchmakingApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/next-round";
+    // String matchmakingApiUrl = "http://localhost:8080/matchmaking/next-round";
+    String matchmakingApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/matchmaking/next-round";
 
     try {
       List<List<Map<String, Object>>> rawPlayerGroups = getRawPlayerGroups(matchmakingApiUrl, payload);

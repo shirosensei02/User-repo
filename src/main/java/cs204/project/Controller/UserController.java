@@ -31,8 +31,8 @@ public class UserController {
     Long userid = customUDetails.getId();
 
     // URL of the tournament service through gateway
-    String tournamentApiUrl = "http://localhost:8080/tournaments/player/" + userid;
-    // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/player/" + userid;
+    // String tournamentApiUrl = "http://localhost:8080/tournaments/player/" + userid;
+    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/player/" + userid;
 
     // Fetch tournaments as a list of maps (JSON objects)
     List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
@@ -52,8 +52,8 @@ public class UserController {
 
 
     // URL of the tournament service through gateway
-    String tournamentApiUrl = "http://localhost:8080/tournaments/available/" + userid;
-    // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/available/" + userid;
+    // String tournamentApiUrl = "http://localhost:8080/tournaments/available/" + userid;
+    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/available/" + userid;
 
     // Fetch tournaments as a list of maps (JSON objects)
     List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
@@ -77,8 +77,8 @@ public class UserController {
     Long userid = customUDetails.getId();
 
     // URL of the tournament service through gateway
-    String tournamentApiUrl = "http://localhost:8080/tournaments/" + tournamentId + "/player/" + userid;
-    // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + tournamentId + "/player/" + userid;
+    // String tournamentApiUrl = "http://localhost:8080/tournaments/" + tournamentId + "/player/" + userid;
+    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + tournamentId + "/player/" + userid;
 
     // Post request
     restTemplate.postForObject(tournamentApiUrl, null, Void.class);
