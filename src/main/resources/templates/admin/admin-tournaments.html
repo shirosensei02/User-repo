@@ -45,7 +45,7 @@
                         <p class="card-text" th:text="'Status: ' + ${tournament['status']}">Status: Open</p>
                         <a th:href="@{/admin/tournament/{id}(id=${tournament['id']})}" class="btn btn-warning">Edit</a>
                         <a href="#" class="btn btn-danger" th:onclick="'deleteTournament(' + ${tournament['id']} + ')'">Delete</a>
-                        <a th:href="@{/admin/startTournament/{id}(id=${tournament.id})}" 
+                        <a th:href="@{/admin/tournament-start/{id}(id=${tournament.id})}" 
                         class="btn btn-success"
                         th:classappend="${tournament['status'].toUpperCase() == 'CLOSED' ? ' disabled' : ''}"
                         th:disabled="${tournament['status'].toUpperCase() == 'CLOSED'}">Start Tournament</a>
