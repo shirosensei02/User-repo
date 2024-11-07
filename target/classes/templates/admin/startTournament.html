@@ -87,46 +87,64 @@
     <script>
         function collectPlayerRanks() {
             const groups = [];
-
+            let duplicateFound = false;
+    
             // Gather selected ranks for each player in each group
             document.querySelectorAll('.player-select').forEach(select => {
                 const groupId = parseInt(select.getAttribute('data-group-id'), 10); // Convert to integer
                 const playerId = select.getAttribute('data-player-id');
                 const playerRank = select.getAttribute('data-player-rank');
                 const position = select.value;
-
+    
                 // Ensure each groupId has an array in the groups array
                 if (!groups[groupId]) {
                     groups[groupId] = [];
                 }
-
+    
                 groups[groupId].push({ playerId, playerRank, position });
             });
+    
+            // Check for duplicate positions in each group using an array
+            for (let groupId = 0; groupId < groups.length; groupId++) {
+                const group = groups[groupId];
+                const positions = []; // Array to track positions within the group
 
+                for (let player of group) {
+                    if (positions.includes(player.position)) {
+                        alert(`Duplicate position detected in group ${groupId + 1} for position: ${player.position}`);
+                        duplicateFound = true;
+                        break; // Exit inner loop
+                    } else {
+                        positions.push(player.position); // Add position to array if it's unique
+                    }
+                }
+
+                if (duplicateFound) {
+                    return false; // Exit the function immediately
+                }
+            }
             // Sort each group by rank
             groups.forEach(group => {
                 group.sort((a, b) => a.position - b.position);
             });
-
-            //Remove the position attribute from each object
+    
+            // Remove the position attribute from each object
             groups.forEach(group => {
                 group.forEach(player => {
                     delete player.position;
                 });
             });
-
+    
             // Convert groups array to JSON
             const jsonString = JSON.stringify(groups);
-
-            // Print JSON string to the console
-            alert("Group Ranks JSON: " + jsonString);
-
+    
             // Set it to the hidden input field
             document.getElementById('groupRanks').value = jsonString;
-
-            return true; // Allow form submission
+    
+            return true; // Allow form submission if no duplicates were found
         }
     </script>
+    
 
 </body>
 
