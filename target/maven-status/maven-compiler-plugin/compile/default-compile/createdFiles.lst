@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 cs204\project\Security\PasswordEncoderConfig.class
 cs204\project\Controller\Player.class
 cs204\project\ProjectApplication.class
@@ -16,3 +17,6 @@ cs204\project\Controller\AdminController$1.class
 cs204\project\Controller\SignupController.class
 cs204\project\Repo\UserRepository.class
 cs204\project\Service\UserDetailService.class
+=======
+cs204/project/Controller/AdminController$1.class
+>>>>>>> cloudmerge

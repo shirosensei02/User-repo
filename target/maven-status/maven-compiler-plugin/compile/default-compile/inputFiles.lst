@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Controller\AdminController.java
 C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Controller\AuthenticationController.java
 C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Controller\HomeController.java
@@ -15,3 +16,20 @@ C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs20
 C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Service\AdminService.java
 C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Service\UserDetailService.java
 C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Util\DefaultAdminInitializer.java
+=======
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Controller/AdminController.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Controller/AuthenticationController.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Controller/HomeController.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Controller/Player.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Controller/SignupController.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Controller/UserController.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Entity/CustomUserDetails.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Entity/User.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Exception/GlobalExceptionHandler.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/ProjectApplication.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Repo/UserRepository.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Security/SecurityConfig.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Service/AdminService.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Service/UserDetailService.java
+/Users/kenneth_21/CS203-Project/User-repo/src/main/java/cs204/project/Util/DefaultAdminInitializer.java
+>>>>>>> cloudmerge

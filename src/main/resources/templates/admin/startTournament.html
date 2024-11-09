@@ -30,10 +30,41 @@
             color: #495057;
             border-radius: 20px;
         }
+
+                /* Modal container */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Modal content box */
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 300px;
+            position: relative;
+        }        
     </style>
 </head>
 
 <body>
+
+    <!-- Modal Structure -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <p id="errorMessage"></p>
+            <button onclick="closeModal()">OK</button>
+        </div>
+    </div>
 
      <div class="container mt-5"></div>
         <h1 class="text-center mb-4" th:text="'Start Tournament: ' + ${tournament.name}"></h1>
@@ -87,46 +118,85 @@
     <script>
         function collectPlayerRanks() {
             const groups = [];
-
+            let duplicateFound = false;
+    
             // Gather selected ranks for each player in each group
             document.querySelectorAll('.player-select').forEach(select => {
                 const groupId = parseInt(select.getAttribute('data-group-id'), 10); // Convert to integer
                 const playerId = select.getAttribute('data-player-id');
                 const playerRank = select.getAttribute('data-player-rank');
                 const position = select.value;
-
+    
                 // Ensure each groupId has an array in the groups array
                 if (!groups[groupId]) {
                     groups[groupId] = [];
                 }
-
+    
                 groups[groupId].push({ playerId, playerRank, position });
             });
+    
+            // Check for duplicate positions in each group using an array
+            for (let groupId = 0; groupId < groups.length; groupId++) {
+                const group = groups[groupId];
+                const positions = []; // Array to track positions within the group
 
+                for (let player of group) {
+                    if (positions.includes(player.position)) {
+                        //Present Alert Modal Here
+                        //alert(`Duplicate position detected in group ${groupId + 1} for position: ${player.position}`);
+                        showModal(`Duplicate position detected in group ${groupId + 1} for position: ${player.position}`);
+                        duplicateFound = true;
+                        break; // Exit inner loop
+                    } else {
+                        positions.push(player.position); // Add position to array if it's unique
+                    }
+                }
+
+                if (duplicateFound) {
+                    return false; // Exit the function immediately
+                }
+            }
             // Sort each group by rank
             groups.forEach(group => {
                 group.sort((a, b) => a.position - b.position);
             });
-
-            //Remove the position attribute from each object
+    
+            // Remove the position attribute from each object
             groups.forEach(group => {
                 group.forEach(player => {
                     delete player.position;
                 });
             });
-
+    
             // Convert groups array to JSON
             const jsonString = JSON.stringify(groups);
-
-            // Print JSON string to the console
-            alert("Group Ranks JSON: " + jsonString);
-
+    
             // Set it to the hidden input field
             document.getElementById('groupRanks').value = jsonString;
-
-            return true; // Allow form submission
+    
+            return true; // Allow form submission if no duplicates were found
         }
+
+        // Function to show modal with error message
+        function showModal(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorModal').style.display = 'flex';
+        }
+
+        // Function to close modal
+        function closeModal() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('errorModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
     </script>
+    
 
 </body>
 
