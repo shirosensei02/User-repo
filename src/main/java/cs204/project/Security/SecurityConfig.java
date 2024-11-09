@@ -21,38 +21,40 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Bean
-	 SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http
-				.authorizeHttpRequests(
-						authz -> authz
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasRole("USER")
-						.requestMatchers("/signup", "/login").permitAll()
-						.anyRequest().authenticated())
-						.formLogin(login -> login.loginPage("/login")
-								.defaultSuccessUrl("/", true)
-								.failureUrl("/login?error=true")
-								.permitAll())
-						.oauth2Login(oauth -> oauth
-								.loginPage("/login")
-								.defaultSuccessUrl("/", true)
-								.userInfoEndpoint(userInfo -> userInfo
-								.userAuthoritiesMapper(this::mapAuthorities))
-							)
-						.logout(logout -> logout.logoutSuccessUrl("/login?logout=true")
-								.permitAll()).build();
+  private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
-	}
-    private Collection<? extends GrantedAuthority> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
-        Collection<GrantedAuthority> mappedAuthorities = authorities.stream()
-                .map(authority -> new SimpleGrantedAuthority("ROLE_USER"))
-                .collect(Collectors.toSet());
-        return mappedAuthorities;
-    }
-	@Bean
-     BCryptPasswordEncoder BCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    } 
-	
+  public SecurityConfig(OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) {
+    this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
+  }
+
+  @Bean
+  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    return http
+        .authorizeHttpRequests(authz -> authz
+            .requestMatchers("/admin/**").hasRole("ADMIN")
+            .requestMatchers("/user/**").hasRole("USER")
+            .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
+            .requestMatchers("/signup", "/login").permitAll()
+            .anyRequest().authenticated())
+        .formLogin(login -> login
+            .loginPage("/login")
+            .defaultSuccessUrl("/", true)
+            .failureUrl("/login?error=true")
+            .permitAll())
+        .oauth2Login(oauth -> oauth
+            .loginPage("/login")
+            .successHandler(oAuth2LoginSuccessHandler)
+            .userInfoEndpoint(userInfo -> userInfo
+                .userAuthoritiesMapper(this::mapAuthorities)))
+        .logout(logout -> logout
+            .logoutSuccessUrl("/login?logout=true")
+            .permitAll())
+        .build();
+  }
+
+  private Collection<? extends GrantedAuthority> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
+    return authorities.stream()
+        .map(authority -> new SimpleGrantedAuthority("ROLE_USER"))
+        .collect(Collectors.toSet());
+  }
 }

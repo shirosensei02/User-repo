@@ -9,6 +9,8 @@ C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs20
 C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Exception\GlobalExceptionHandler.java
 C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\ProjectApplication.java
 C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Repo\UserRepository.java
+C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Security\OAuth2LoginSuccessHandler.java
+C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Security\PasswordEncoderConfig.java
 C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Security\SecurityConfig.java
 C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Service\AdminService.java
 C:\Users\iamur\OneDrive\Documents\SMU\CS203 project\User-repo\src\main\java\cs204\project\Service\UserDetailService.java

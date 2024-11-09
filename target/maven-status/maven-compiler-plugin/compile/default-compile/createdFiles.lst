@@ -1,8 +1,10 @@
+cs204\project\Security\PasswordEncoderConfig.class
 cs204\project\Controller\Player.class
 cs204\project\ProjectApplication.class
 cs204\project\Security\SecurityConfig.class
 cs204\project\Controller\AdminController.class
 cs204\project\Exception\GlobalExceptionHandler.class
+cs204\project\Security\OAuth2LoginSuccessHandler.class
 cs204\project\Controller\UserController.class
 cs204\project\Util\DefaultAdminInitializer.class
 cs204\project\Service\AdminService.class
