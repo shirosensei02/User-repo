@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.dao.DataAccessException;
 
 import cs204.project.Controller.Player;
 import cs204.project.Service.UserDetailService;
@@ -34,84 +37,47 @@ public class AdminService {
 
     // Fetch tournaments as a list of maps (JSON objects)
     List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
-
     return tournaments;
   }
 
-  public Map<String, Object> getTournamentById(Long id) throws Exception {
-
-    // Fetch the tournament data by ID
-    // String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
+  public Map<String, Object> getTournamentById(Long id) throws HttpClientErrorException {
     String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
-    try {
-      Map<String, Object> tournament = restTemplate.getForObject(tournamentApiUrl, Map.class);
-      return tournament;
-    } catch (Exception e) {
-      throw e;
-    }
-
+    Map<String, Object> tournament = restTemplate.getForObject(tournamentApiUrl, Map.class);
+    return tournament;
   }
 
-  public void addTournament(Map<String, Object> tournamentData) throws Exception {
-    // Create headers
+  public void addTournament(Map<String, Object> tournamentData) throws HttpClientErrorException, DataAccessException {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-
-    // Create a request entity (tournament data with headers)
     HttpEntity<Map<String, Object>> request = new HttpEntity<>(tournamentData, headers);
-
-    // URL of the Tournament API
-    // String tournamentApiUrl = "http://localhost:8080/tournaments";
-    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments";
-
-    // Send POST request to the Tournament API
-    try {
-      restTemplate.exchange(tournamentApiUrl, HttpMethod.POST, request, String.class);
-    } catch (Exception e) {
-      throw e;
-    }
+    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/";
+    restTemplate.exchange(tournamentApiUrl, HttpMethod.POST, request, String.class);
   }
 
-  public void updateTournament(Long id, Map<String, Object> updatedTournament) throws Exception {
-    try {
-      // Send a PUT request to update the tournament
-      // String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
-      String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
-      restTemplate.put(tournamentApiUrl, updatedTournament);
-    } catch (Exception e) {
-      throw e;
-    }
+  public void updateTournament(Long id, Map<String, Object> updatedTournament) throws HttpClientErrorException {
+    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
+    restTemplate.put(tournamentApiUrl, updatedTournament);
   }
 
-  public void deleteTournament(Long id) throws Exception {
-    try {
-      // URL of the tournament service through gateway
-      // String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
-      String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
-
-      // Call the tournament API to delete the tournament
-      restTemplate.delete(tournamentApiUrl);
-    } catch (Exception e) {
-      throw e;
-    }
+  public void deleteTournament(Long id) throws HttpClientErrorException {
+    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
+    restTemplate.delete(tournamentApiUrl);
   }
 
   public List<Player> getPlayerList(Map<String, Object> tournamentData) {
     List<?> playerListRaw = (List<?>) tournamentData.get("playerList");
     List<Long> playerList = new ArrayList<>();
 
-    // Convert Integer to Long if necessary
     for (Object playerIdObj : playerListRaw) {
       if (playerIdObj instanceof Integer) {
-        playerList.add(((Integer) playerIdObj).longValue()); // Convert Integer to Long
+        playerList.add(((Integer) playerIdObj).longValue());
       } else if (playerIdObj instanceof Long) {
-        playerList.add((Long) playerIdObj); // Cast to Long directly
+        playerList.add((Long) playerIdObj);
       } else {
         System.out.println("Unexpected player ID type: " + playerIdObj.getClass().getName());
       }
     }
 
-    // Create a list of Player objects
     List<Player> players = new ArrayList<>();
     for (Long playerId : playerList) {
       Player playerData = new Player(playerId, userService.findById(playerId).getRank());
@@ -121,60 +87,29 @@ public class AdminService {
     return players;
   }
 
-  public List<List<Map<String, Object>>> getFirstRoundGroup(Map<String, Object> payload) throws Exception {
-    // API URL to send player list to matchmaking API
-    // String matchmakingApiUrl = "http://localhost:8080/matchmaking/first-round";
+  public List<List<Map<String, Object>>> getFirstRoundGroup(Map<String, Object> payload)
+      throws JsonProcessingException, HttpClientErrorException {
     String matchmakingApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/matchmaking/first-round";
-
-    // Call the matchmaking API and get a raw response
-    try {
-      List<List<Map<String, Object>>> rawPlayerGroups = getRawPlayerGroups(matchmakingApiUrl, payload);
-      return rawPlayerGroups;
-    } catch (Exception e) {
-      throw e;
-    }
+    List<List<Map<String, Object>>> rawPlayerGroups = getRawPlayerGroups(matchmakingApiUrl, payload);
+    return rawPlayerGroups;
   }
 
-  public List<List<Map<String, Object>>> getNextRoundGroup(Map<String, Object> payload) throws Exception {
-    // String matchmakingApiUrl = "http://localhost:8080/matchmaking/next-round";
+  public List<List<Map<String, Object>>> getNextRoundGroup(Map<String, Object> payload)
+      throws JsonProcessingException, HttpClientErrorException {
     String matchmakingApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/matchmaking/next-round";
-
-    try {
-      List<List<Map<String, Object>>> rawPlayerGroups = getRawPlayerGroups(matchmakingApiUrl, payload);
-      return rawPlayerGroups;
-    } catch (Exception e) {
-      throw e;
-    }
+    List<List<Map<String, Object>>> rawPlayerGroups = getRawPlayerGroups(matchmakingApiUrl, payload);
+    return rawPlayerGroups;
   }
 
-  public List<List<Map<String, Object>>> getRawPlayerGroups(String matchmakingApiUrl, Map<String, Object> payload) throws Exception{
-    try {
-      // Create the ObjectMapper for JSON serialization
-      ObjectMapper objectMapper = new ObjectMapper();
-
-      // Serialize the payload into a JSON string
-      String jsonPayload = objectMapper.writeValueAsString(payload);
-
-      // Set the headers with Content-Type as application/json
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.APPLICATION_JSON);
-
-      // Create the HttpEntity containing the headers and the JSON payload
-      HttpEntity<String> entity = new HttpEntity<>(jsonPayload, headers);
-
-      // Send the POST request to the matchmaking API and get the response
-      ResponseEntity<List> response = restTemplate.exchange(
-          matchmakingApiUrl,
-          HttpMethod.POST,
-          entity,
-          List.class);
-
-      List<List<Map<String, Object>>> rawPlayerGroups = (List<List<Map<String, Object>>>) response.getBody();
-
-      return rawPlayerGroups;
-
-    } catch (Exception e) {
-      throw e;
-    }
+  public List<List<Map<String, Object>>> getRawPlayerGroups(String matchmakingApiUrl, Map<String, Object> payload)
+      throws JsonProcessingException, HttpClientErrorException{
+    ObjectMapper objectMapper = new ObjectMapper();
+    String jsonPayload = objectMapper.writeValueAsString(payload);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<String> entity = new HttpEntity<>(jsonPayload, headers);
+    ResponseEntity<List> response = restTemplate.exchange(matchmakingApiUrl, HttpMethod.POST, entity, List.class);
+    List<List<Map<String, Object>>> rawPlayerGroups = (List<List<Map<String, Object>>>) response.getBody();
+    return rawPlayerGroups;
   }
 }

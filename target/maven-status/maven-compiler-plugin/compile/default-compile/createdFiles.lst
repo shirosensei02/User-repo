@@ -1,11 +1,17 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 cs204\project\Security\PasswordEncoderConfig.class
+=======
+>>>>>>> cloudmerge
 cs204\project\Controller\Player.class
 cs204\project\ProjectApplication.class
 cs204\project\Security\SecurityConfig.class
 cs204\project\Controller\AdminController.class
 cs204\project\Exception\GlobalExceptionHandler.class
+<<<<<<< HEAD
 cs204\project\Security\OAuth2LoginSuccessHandler.class
+=======
+>>>>>>> cloudmerge
 cs204\project\Controller\UserController.class
 cs204\project\Util\DefaultAdminInitializer.class
 cs204\project\Service\AdminService.class
@@ -17,6 +23,9 @@ cs204\project\Controller\AdminController$1.class
 cs204\project\Controller\SignupController.class
 cs204\project\Repo\UserRepository.class
 cs204\project\Service\UserDetailService.class
+<<<<<<< HEAD
 =======
 cs204/project/Controller/AdminController$1.class
+>>>>>>> cloudmerge
+=======
 >>>>>>> cloudmerge
