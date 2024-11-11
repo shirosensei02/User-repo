@@ -1,4 +1,14 @@
-cs204\project\AdminControllerTest.class
+cs204\project\Controller\AdminControllerTest.class
+cs204\project\Service\AdminServiceTest.class
+cs204\project\Controller\PlayerTest.class
+cs204\project\Controller\HomeControllerTest.class
+cs204\project\Service\UserDetailServiceTest.class
+cs204\project\Controller\SignupControllerTest$SignupSubmitTests.class
+cs204\project\Entity\UserTest.class
+cs204\project\Entity\CustomUserDetailsTest.class
+cs204\project\Controller\SignupControllerTest$SignupFormTests.class
+cs204\project\ProjectApplicationTests.class
 cs204\project\Controller\AuthenticationControllerTest.class
+cs204\project\Exception\GlobalExceptionHandlerTest.class
+cs204\project\Util\DefaultAdminInitializerTest.class
 cs204\project\Controller\SignupControllerTest.class
-cs204\project\AuthenticationControllerTest.class

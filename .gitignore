@@ -32,3 +32,12 @@ build/
 ### VS Code ###
 .vscode/
 .env
+
+### Jacoco ###
+.jacoco/
+*.exec
+coverage/
+jacoco.xml
+**/jacoco.xml
+**/jacoco-report/
+**/site/jacoco/

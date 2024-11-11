@@ -1,7 +1,15 @@
-C:\Users\yeomi\Documents\SMU\CS 203 proj\User-repo\src\test\java\cs204\project\AdminControllerTest.java
-C:\Users\yeomi\Documents\SMU\CS 203 proj\User-repo\src\test\java\cs204\project\AuthenticationControllerTest.java
-C:\Users\yeomi\Documents\SMU\CS 203 proj\User-repo\src\test\java\cs204\project\Controller\AuthenticationControllerTest.java
-C:\Users\yeomi\Documents\SMU\CS 203 proj\User-repo\src\test\java\cs204\project\Controller\HomeControllerTest.java
-C:\Users\yeomi\Documents\SMU\CS 203 proj\User-repo\src\test\java\cs204\project\Controller\SignupControllerTest.java
-C:\Users\yeomi\Documents\SMU\CS 203 proj\User-repo\src\test\java\cs204\project\ProjectApplicationTests.java
-C:\Users\yeomi\Documents\SMU\CS 203 proj\User-repo\src\test\java\cs204\project\UserControllerTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Controller\AdminControllerTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Controller\AuthenticationControllerTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Controller\HomeControllerTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Controller\PlayerTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Controller\SignupControllerTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Controller\UserControllerTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Entity\CustomUserDetailsTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Entity\UserTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Exception\GlobalExceptionHandlerTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\ProjectApplicationTests.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Repo\UserRepositoryTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Security\SecurityConfigTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Service\AdminServiceTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Service\UserDetailServiceTest.java
+C:\Users\linma\Desktop\Repo\User\User-repo\src\test\java\cs204\project\Util\DefaultAdminInitializerTest.java
