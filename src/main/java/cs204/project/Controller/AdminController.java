@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.data.domain.Page;
@@ -20,26 +19,9 @@ import org.springframework.data.domain.Pageable;
 import cs204.project.Entity.User;
 import cs204.project.Service.AdminService;
 import cs204.project.Service.UserDetailService;
-// import cs204.project.Entity.Player;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-
-import org.springframework.ui.Model;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
-
-import cs204.project.Controller.Player;
-import cs204.project.Service.AdminService;
 
 @Controller
 @RequestMapping("/admin")
@@ -51,8 +33,6 @@ public class AdminController {
   @Autowired
   private AdminService adminService;
 
-  private RestTemplate restTemplate = new RestTemplate();
-
   @GetMapping("")
   public String getDashboard() {
     return "redirect:/admin/admin-tournaments";
@@ -61,7 +41,6 @@ public class AdminController {
   @SuppressWarnings("unchecked")
   @GetMapping("/admin-tournaments")
   public String getTournaments(Model model) {
-
     // Fetch tournaments as a list of maps (JSON objects)
     List<Map<String, Object>> tournaments = adminService.getAllTournaments();
     tournaments.sort(Comparator.comparing(t -> (String) t.get("date")));
@@ -94,11 +73,8 @@ public class AdminController {
     tournamentData.put("status", status);
     tournamentData.put("region", region);
 
-    try {
-      adminService.addTournament(tournamentData);
-    } catch (Exception e) {
-      System.err.println("Error while adding tournament: " + e.getMessage());
-    }
+    // Removed try-catch block to allow exceptions to propagate
+    adminService.addTournament(tournamentData);
 
     return "redirect:/admin/admin-tournaments";
   }
@@ -129,16 +105,9 @@ public class AdminController {
 
   @GetMapping("/tournament/{id}")
   public String getUpdateTournament(@PathVariable("id") Long id, Model model) {
-
-    try {
-      Map<String, Object> tournament = adminService.getTournamentById(id);
-      // Pass the tournament data to the Thymeleaf view
-      model.addAttribute("tournament", tournament);
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      // return "error";
-    }
-
+    Map<String, Object> tournament = adminService.getTournamentById(id);
+    // Pass the tournament data to the Thymeleaf view
+    model.addAttribute("tournament", tournament);
     return "admin/updateTournament"; // Returns the update form page
   }
 
@@ -157,12 +126,8 @@ public class AdminController {
     Map<String, Object> updatedTournament = createUpdatedTournament(id, name, datetime, minRank, maxRank, status,
         region);
 
-    try {
-      adminService.updateTournament(id, updatedTournament);
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      // return "error";
-    }
+    // Removed try-catch block to allow exceptions to propagate
+    adminService.updateTournament(id, updatedTournament);
 
     // Redirect back to the tournament list after updating
     return "redirect:/admin/admin-tournaments";
@@ -170,13 +135,8 @@ public class AdminController {
 
   @DeleteMapping("/tournaments/{id}")
   public ResponseEntity<Void> deleteTournament(@PathVariable Long id) {
-    try {
-      adminService.deleteTournament(id);
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      // return "error";
-    }
-
+    // Removed try-catch block to allow exceptions to propagate
+    adminService.deleteTournament(id);
     return ResponseEntity.noContent().build(); // Respond with 204 No Content
   }
 
@@ -184,13 +144,7 @@ public class AdminController {
 
   @GetMapping("/tournament-start/{id}")
   public String startTournament(@PathVariable Long id, Model model) {
-
-    Map<String, Object> tournamentData = new HashMap<>();
-    try {
-      tournamentData = adminService.getTournamentById(id);
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
+    Map<String, Object> tournamentData = adminService.getTournamentById(id);
 
     // Retrieve player list from the tournament
     int round = (int) tournamentData.get("round");
@@ -203,14 +157,7 @@ public class AdminController {
     payload.put("tournamentId", id);
     payload.put("players", players);
 
-    List<List<Map<String, Object>>> rawPlayerGroups = new ArrayList<>();
-    try {
-      rawPlayerGroups = adminService.getFirstRoundGroup(payload);
-    } catch (Exception e) {
-      e.printStackTrace();
-      // return "error";
-    }
-
+    List<List<Map<String, Object>>> rawPlayerGroups = adminService.getFirstRoundGroup(payload);
     List<List<User>> userGroups = getUserGroups(rawPlayerGroups);
 
     // Add player groups and tournament details to the model
@@ -223,34 +170,15 @@ public class AdminController {
 
   @PostMapping("/tournament-start/{id}")
   public String nextRound(@PathVariable Long id, @RequestParam("groupRanks") String groupRanksJson, Model model) {
-
     // Initialize ObjectMapper
     ObjectMapper objectMapper = new ObjectMapper();
-    //List<List<Player>> playerGroups = new ArrayList<>();
 
-    try {
-      // Parse the JSON string into a list of lists of maps
-      playerGroups = objectMapper.readValue(groupRanksJson, new TypeReference<>() {
-      });
-    } catch (Exception e) {
-      System.out.println("Error parsing groupRanksJson: " + e.getMessage());
-      // Handle error (e.g., return an error view or message)
-    }
-
-    for (List<Player> list : playerGroups) {
-      for (Player player : list) {
-        System.out.print("Player: " + player.getId() + " ");
-      }
-      System.out.println();
-    }
+    // Parse the JSON string into a list of lists of maps
+    playerGroups = objectMapper.readValue(groupRanksJson, new TypeReference<>() {
+    });
 
     // Get Tournament Details
-    Map<String, Object> tournamentData = new HashMap<>();
-    try {
-      tournamentData = adminService.getTournamentById(id);
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
+    Map<String, Object> tournamentData = adminService.getTournamentById(id);
 
     // Increment the round for the next round
     int round = (int) tournamentData.get("round");
@@ -268,40 +196,28 @@ public class AdminController {
 
     if (round >= 4) {
       updatedTournament.put("status", "Closed");
-      try {
-        adminService.updateTournament(id, updatedTournament);
-      } catch (Exception e) {
-        System.out.println(e.getMessage());
-        // return "error";
-      }
+      adminService.updateTournament(id, updatedTournament);
       return "redirect:/admin";
     }
 
     // Send a PUT request to update the tournament
-    try {
-      adminService.updateTournament(id, updatedTournament);
+    adminService.updateTournament(id, updatedTournament);
 
-      // Prepare the payload for the matchmaking API
-      Map<String, Object> payload = new HashMap<>();
-      payload.put("tournamentId", id);
-      payload.put("playerGroups", playerGroups);
-      payload.put("round", round);
+    // Prepare the payload for the matchmaking API
+    Map<String, Object> payload = new HashMap<>();
+    payload.put("tournamentId", id);
+    payload.put("playerGroups", playerGroups);
+    payload.put("round", round);
 
-      List<List<Map<String, Object>>> rawPlayerGroups = adminService.getNextRoundGroup(payload);
+    List<List<Map<String, Object>>> rawPlayerGroups = adminService.getNextRoundGroup(payload);
+    List<List<User>> userGroups = getUserGroups(rawPlayerGroups);
 
-      List<List<User>> userGroups = getUserGroups(rawPlayerGroups);
+    // Add round, tournament data, and player groups to the model
+    model.addAttribute("round", round);
+    model.addAttribute("tournament", tournamentData);
+    model.addAttribute("userGroups", userGroups);
 
-      // Add round, tournament data, and player groups to the model
-      model.addAttribute("round", round);
-      model.addAttribute("tournament", tournamentData);
-      model.addAttribute("userGroups", userGroups);
-
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      // return "error"
-    }
     return "admin/startTournament"; // Return the updated view
-
   }
 
   public Map<String, Object> createUpdatedTournament(Long id, String name, String datetime, int minRank, int maxRank,
@@ -331,15 +247,11 @@ public class AdminController {
 
         // update user rank
         User user = userService.findById(player.getId());
-        // doesnt work need try
-        // .orElseThrow(() -> new RuntimeException("User not found: " +
-        // player.getId()));
         user.setRank(player.getRank());
         userService.save(user);
         userSubGroup.add(user);
 
         group.add(player);
-
       }
       userGroups.add(userSubGroup);
       playerGroups.add(group);
