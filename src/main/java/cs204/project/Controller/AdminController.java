@@ -114,9 +114,9 @@ public class AdminController {
   }
 
   // Handle the form submission for updating the tournament
-  @PutMapping("/tournament/{id}")
+  @PostMapping("/tournament/{id}")
   public String updateTournament(
-      @RequestParam Long id,
+      @PathVariable Long id,
       @RequestParam String name,
       @RequestParam String datetime,
       @RequestParam int minRank,
@@ -128,7 +128,6 @@ public class AdminController {
     Map<String, Object> updatedTournament = createUpdatedTournament(id, name, datetime, minRank, maxRank, status,
         region);
 
-    // Removed try-catch block to allow exceptions to propagate
     adminService.updateTournament(id, updatedTournament);
 
     // Redirect back to the tournament list after updating

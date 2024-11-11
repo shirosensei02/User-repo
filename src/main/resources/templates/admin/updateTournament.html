@@ -16,7 +16,7 @@
       <h1 class="mb-4">Update Tournament</h1>
 
       <!-- Form pre-populated with tournament data -->
-      <form th:action="@{/admin/tournament/{id}(id=${tournament.id})}" method="put">
+      <form id="updateForm" th:action="@{/admin/tournament/{id}(id=${tournament.id})}" method="post">
         <input type="hidden" name="id" th:value="${tournament.id}" />
 
         <div class="form-group">
@@ -89,6 +89,36 @@
         <button type="submit" class="btn btn-primary">Update Tournament</button>
         <a href="/admin/admin-tournaments" class="btn btn-secondary">Cancel</a>
       </form>
+
+      <!-- <script>
+        function submitForm() {
+            const form = document.getElementById('updateForm');
+            const formData = new FormData(form);
+            const data = {};
+
+            // Convert form data to JSON
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Send PUT request
+            fetch(form.getAttribute('th:action'), {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "/admin/admin-tournaments";
+                } else {
+                    console.error('Error updating tournament:', response.statusText);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script> -->
     </div>
 
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>

@@ -32,8 +32,8 @@ public class AdminService {
 
   public List<Map<String, Object>> getAllTournaments() {
     // URL of the tournament service through gateway
-    // String tournamentApiUrl = "http://localhost:8080/tournaments";
-    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments";
+    String tournamentApiUrl = "http://localhost:8080/tournaments";
+    // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments";
 
     // Fetch tournaments as a list of maps (JSON objects)
     List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
@@ -41,7 +41,8 @@ public class AdminService {
   }
 
   public Map<String, Object> getTournamentById(Long id) throws HttpClientErrorException {
-    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
+    // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
+    String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
     Map<String, Object> tournament = restTemplate.getForObject(tournamentApiUrl, Map.class);
     return tournament;
   }
@@ -50,17 +51,20 @@ public class AdminService {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     HttpEntity<Map<String, Object>> request = new HttpEntity<>(tournamentData, headers);
-    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/";
+    // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/";
+    String tournamentApiUrl = "http://localhost:8080/tournaments";
     restTemplate.exchange(tournamentApiUrl, HttpMethod.POST, request, String.class);
   }
 
   public void updateTournament(Long id, Map<String, Object> updatedTournament) throws HttpClientErrorException {
-    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
+    // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
+    String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
     restTemplate.put(tournamentApiUrl, updatedTournament);
   }
 
   public void deleteTournament(Long id) throws HttpClientErrorException {
-    String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
+    // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + id;
+    String tournamentApiUrl = "http://localhost:8080/tournaments/" + id;
     restTemplate.delete(tournamentApiUrl);
   }
 
@@ -89,14 +93,16 @@ public class AdminService {
 
   public List<List<Map<String, Object>>> getFirstRoundGroup(Map<String, Object> payload)
       throws JsonProcessingException, HttpClientErrorException {
-    String matchmakingApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/matchmaking/first-round";
+    String matchmakingApiUrl = "http://localhost:8080/matchmaking/first-round";
+    // String matchmakingApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/matchmaking/first-round";
     List<List<Map<String, Object>>> rawPlayerGroups = getRawPlayerGroups(matchmakingApiUrl, payload);
     return rawPlayerGroups;
   }
 
   public List<List<Map<String, Object>>> getNextRoundGroup(Map<String, Object> payload)
       throws JsonProcessingException, HttpClientErrorException {
-    String matchmakingApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/matchmaking/next-round";
+    String matchmakingApiUrl = "http://localhost:8080/matchmaking/matchmaking/next-round";
+    // String matchmakingApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/matchmaking/next-round";
     List<List<Map<String, Object>>> rawPlayerGroups = getRawPlayerGroups(matchmakingApiUrl, payload);
     return rawPlayerGroups;
   }
