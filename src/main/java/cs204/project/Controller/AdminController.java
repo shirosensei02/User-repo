@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import cs204.project.Service.UserDetailService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
 @RequestMapping("/admin")
@@ -143,7 +145,7 @@ public class AdminController {
   private List<List<Player>> playerGroups = new ArrayList<>();
 
   @GetMapping("/tournament-start/{id}")
-  public String startTournament(@PathVariable Long id, Model model) {
+  public String startTournament(@PathVariable Long id, Model model) throws JsonProcessingException{
     Map<String, Object> tournamentData = adminService.getTournamentById(id);
 
     // Retrieve player list from the tournament
@@ -169,7 +171,7 @@ public class AdminController {
   }
 
   @PostMapping("/tournament-start/{id}")
-  public String nextRound(@PathVariable Long id, @RequestParam("groupRanks") String groupRanksJson, Model model) {
+  public String nextRound(@PathVariable Long id, @RequestParam("groupRanks") String groupRanksJson, Model model) throws JsonProcessingException{
     // Initialize ObjectMapper
     ObjectMapper objectMapper = new ObjectMapper();
 

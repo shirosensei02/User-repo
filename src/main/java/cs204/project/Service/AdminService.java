@@ -84,21 +84,21 @@ public class AdminService {
   }
 
   public List<List<Map<String, Object>>> getFirstRoundGroup(Map<String, Object> payload)
-      throws HttpClientErrorException {
+      throws JsonProcessingException, HttpClientErrorException {
     String matchmakingApiUrl = "http://localhost:8080/matchmaking/first-round";
     List<List<Map<String, Object>>> rawPlayerGroups = getRawPlayerGroups(matchmakingApiUrl, payload);
     return rawPlayerGroups;
   }
 
   public List<List<Map<String, Object>>> getNextRoundGroup(Map<String, Object> payload)
-      throws HttpClientErrorException {
+      throws JsonProcessingException, HttpClientErrorException {
     String matchmakingApiUrl = "http://localhost:8080/matchmaking/next-round";
     List<List<Map<String, Object>>> rawPlayerGroups = getRawPlayerGroups(matchmakingApiUrl, payload);
     return rawPlayerGroups;
   }
 
   public List<List<Map<String, Object>>> getRawPlayerGroups(String matchmakingApiUrl, Map<String, Object> payload)
-      throws HttpClientErrorException {
+      throws JsonProcessingException, HttpClientErrorException{
     ObjectMapper objectMapper = new ObjectMapper();
     String jsonPayload = objectMapper.writeValueAsString(payload);
     HttpHeaders headers = new HttpHeaders();
