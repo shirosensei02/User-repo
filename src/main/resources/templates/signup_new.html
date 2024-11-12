@@ -92,8 +92,8 @@
     <div class="container">
         <div class="row justify-content-center">
 
-            <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show w-75 mt-2" role="alert">
-                <h6 th:text="${errorMessage}"></h6>
+            <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show w-75 mt-2" role="alert">
+                <h6 th:utext="${errorMessage}"></h6>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             

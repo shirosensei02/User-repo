@@ -11,7 +11,7 @@
 
 <body class="d-flex flex-column min-vh-100">
     <!-- Navbar -->
-    <div th:replace="users/navbar :: navbar"></div>
+    <div th:replace="users/navbar :: navbar" th:with="userRank=${userRank}, userName=${userName}"></div>
 
     <!-- Header -->
     <div class="container mt-4 flex-grow-1">

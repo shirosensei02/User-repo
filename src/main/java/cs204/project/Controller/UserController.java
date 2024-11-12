@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
 import cs204.project.Entity.CustomUserDetails;
+import cs204.project.Service.UserDetailService;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+  @Autowired
+  private UserDetailService userService;
 
   @GetMapping("")
   public String getHomePage(Model model) {
@@ -38,6 +43,15 @@ public class UserController {
     List<Map<String, Object>> tournaments = restTemplate.getForObject(tournamentApiUrl, List.class);
 
     model.addAttribute("tournaments", tournaments);
+
+    System.out.println("USER ID: " + userid);
+
+    // Fetch user's name and rank
+    int userRank = userService.findById(userid).getRank();
+    String userName = userService.findById(userid).getUsername();
+
+    model.addAttribute("userRank", userRank);
+    model.addAttribute("userName", userName);
 
     return "users/home_new";
   }
@@ -61,6 +75,13 @@ public class UserController {
 
     // Pass the fetched tournaments to the Thymeleaf view
     model.addAttribute("tournaments", tournaments);
+
+    // Fetch user's name and rank
+    int userRank = userService.findById(userid).getRank();
+    String userName = userService.findById(userid).getUsername();
+
+    model.addAttribute("userRank", userRank);
+    model.addAttribute("userName", userName);
 
     return "users/tournaments"; // This returns the tournaments.html Thymeleaf view
   }

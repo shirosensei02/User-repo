@@ -23,7 +23,7 @@
 
   <body>
     <!--Navbar-->
-    <div th:replace="users/navbar :: navbar"></div>
+    <div th:replace="users/navbar :: navbar" th:with="userRank=${userRank}, userName=${userName}"></div>
 
     <!--Main Content-->
     <div class="container mt-4">
