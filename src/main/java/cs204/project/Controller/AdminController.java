@@ -22,9 +22,6 @@ import cs204.project.Service.AdminService;
 import cs204.project.Service.UserDetailService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import Matchmaking.Entity.Player;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
