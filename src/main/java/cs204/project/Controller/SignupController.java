@@ -28,18 +28,24 @@ public class SignupController {
         return "signup_new";
     }
 
-    @PostMapping("/signup")
-    public String signupSubmit(@Valid @ModelAttribute User user, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            // Collect all error messages
-            String errorMessages = result.getAllErrors().stream()
-                    .map(error -> error.getDefaultMessage())
-                    .collect(Collectors.joining("<br>"));
+    // @PostMapping("/signup")
+    // public String signupSubmit(@Valid @ModelAttribute User user, BindingResult result, Model model) {
+    //     if (result.hasErrors()) {
+    //         // Collect all error messages
+    //         String errorMessages = result.getAllErrors().stream()
+    //                 .map(error -> error.getDefaultMessage())
+    //                 .collect(Collectors.joining("<br>"));
 
-            // Add the list of error messages to the model
-            model.addAttribute("errorMessage", errorMessages);
-            return "signup_new"; // Return to the signup page if there are validation errors
-        }
+    //         // Add the list of error messages to the model
+    //         model.addAttribute("errorMessage", errorMessages);
+    //         return "signup_new"; // Return to the signup page if there are validation errors
+    //     }
+    //     userService.registerUser(user);
+    //     return "redirect:/login";
+    // }
+
+    @PostMapping("/signup")
+    public String signupSubmit(@ModelAttribute User user) {
         userService.registerUser(user);
         return "redirect:/login";
     }
