@@ -57,7 +57,6 @@
 </head>
 
 <body>
-
     <!-- Modal Structure -->
     <div id="errorModal" class="modal">
         <div class="modal-content">
@@ -170,6 +169,8 @@
     
             // Convert groups array to JSON
             const jsonString = JSON.stringify(groups);
+
+            alert(jsonString);
     
             // Set it to the hidden input field
             document.getElementById('groupRanks').value = jsonString;

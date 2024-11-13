@@ -170,16 +170,35 @@ public class AdminController {
   }
 
   @PostMapping("/tournament-start/{id}")
-  public String nextRound(@PathVariable Long id, @RequestParam("groupRanks") String groupRanksJson, Model model) throws JsonProcessingException{
+  public String nextRound(@PathVariable Long id, @RequestParam("groupRanks") String groupRanksJson, Model model) {
+
     // Initialize ObjectMapper
     ObjectMapper objectMapper = new ObjectMapper();
+    //List<List<Player>> playerGroups = new ArrayList<>();
 
-    // Parse the JSON string into a list of lists of maps
-    playerGroups = objectMapper.readValue(groupRanksJson, new TypeReference<>() {
-    });
+    try {
+      // Parse the JSON string into a list of lists of maps
+      playerGroups = objectMapper.readValue(groupRanksJson, new TypeReference<>() {
+      });
+    } catch (Exception e) {
+      System.out.println("Error parsing groupRanksJson: " + e.getMessage());
+      // Handle error (e.g., return an error view or message)
+    }
+
+    for (List<Player> list : playerGroups) {
+      for (Player player : list) {
+        System.out.print("Player: " + player.getId() + " ");
+      }
+      System.out.println();
+    }
 
     // Get Tournament Details
-    Map<String, Object> tournamentData = adminService.getTournamentById(id);
+    Map<String, Object> tournamentData = new HashMap<>();
+    try {
+      tournamentData = adminService.getTournamentById(id);
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
 
     // Increment the round for the next round
     int round = (int) tournamentData.get("round");
@@ -197,30 +216,41 @@ public class AdminController {
 
     if (round >= 4) {
       updatedTournament.put("status", "Closed");
-      adminService.updateTournament(id, updatedTournament);
+      try {
+        adminService.updateTournament(id, updatedTournament);
+      } catch (Exception e) {
+        System.out.println(e.getMessage());
+        // return "error";
+      }
       return "redirect:/admin";
     }
 
     // Send a PUT request to update the tournament
-    adminService.updateTournament(id, updatedTournament);
+    try {
+      adminService.updateTournament(id, updatedTournament);
 
-    // Prepare the payload for the matchmaking API
-    Map<String, Object> payload = new HashMap<>();
-    payload.put("tournamentId", id);
-    payload.put("playerGroups", playerGroups);
-    payload.put("round", round);
+      // Prepare the payload for the matchmaking API
+      Map<String, Object> payload = new HashMap<>();
+      payload.put("tournamentId", id);
+      payload.put("playerGroups", playerGroups);
+      payload.put("round", round);
 
-    List<List<Map<String, Object>>> rawPlayerGroups = adminService.getNextRoundGroup(payload);
-    List<List<User>> userGroups = getUserGroups(rawPlayerGroups);
+      List<List<Map<String, Object>>> rawPlayerGroups = adminService.getNextRoundGroup(payload);
 
-    // Add round, tournament data, and player groups to the model
-    model.addAttribute("round", round);
-    model.addAttribute("tournament", tournamentData);
-    model.addAttribute("userGroups", userGroups);
+      List<List<User>> userGroups = getUserGroups(rawPlayerGroups);
 
+      // Add round, tournament data, and player groups to the model
+      model.addAttribute("round", round);
+      model.addAttribute("tournament", tournamentData);
+      model.addAttribute("userGroups", userGroups);
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      // return "error"
+    }
     return "admin/startTournament"; // Return the updated view
   }
-
+  
   public Map<String, Object> createUpdatedTournament(Long id, String name, String datetime, int minRank, int maxRank,
       String status, String region) {
     Map<String, Object> updatedTournament = new HashMap<>();
