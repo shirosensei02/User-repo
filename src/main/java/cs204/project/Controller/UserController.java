@@ -27,6 +27,8 @@ public class UserController {
   @Autowired
   private UserDetailService userService;
 
+  private String baseGatewayURL = "https://tournamnet-matchmaking-api-service.azuremicroservices.io";
+
   @GetMapping("")
   public String getHomePage(Model model) {
     RestTemplate restTemplate = new RestTemplate();
@@ -36,7 +38,7 @@ public class UserController {
     Long userid = customUDetails.getId();
 
     // URL of the tournament service through gateway
-    String tournamentApiUrl = "http://localhost:8080/tournaments/player/" + userid;
+    String tournamentApiUrl = baseGatewayURL + "/tournaments/player/" + userid;
     // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/player/" + userid;
 
     // Fetch tournaments as a list of maps (JSON objects)
@@ -66,7 +68,7 @@ public class UserController {
 
 
     // URL of the tournament service through gateway
-    String tournamentApiUrl = "http://localhost:8080/tournaments/available/" + userid;
+    String tournamentApiUrl = baseGatewayURL + "/tournaments/available/" + userid;
     // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/available/" + userid;
 
     // Fetch tournaments as a list of maps (JSON objects)
@@ -98,7 +100,7 @@ public class UserController {
     Long userid = customUDetails.getId();
 
     // URL of the tournament service through gateway
-    String tournamentApiUrl = "http://localhost:8080/tournaments/" + tournamentId + "/player/" + userid;
+    String tournamentApiUrl = baseGatewayURL + "/tournaments/" + tournamentId + "/player/" + userid;
     // String tournamentApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/tournaments/" + tournamentId + "/player/" + userid;
 
     // Post request
