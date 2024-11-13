@@ -22,6 +22,9 @@ import cs204.project.Service.AdminService;
 import cs204.project.Service.UserDetailService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import Matchmaking.Entity.Player;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -249,6 +252,19 @@ public class AdminController {
       // return "error"
     }
     return "admin/startTournament"; // Return the updated view
+  }
+
+    public Map<String, Object> createUpdatedTournament(Long id, String name, String datetime, int minRank, int maxRank,
+      String status, String region) {
+    Map<String, Object> updatedTournament = new HashMap<>();
+    updatedTournament.put("id", id);
+    updatedTournament.put("name", name);
+    updatedTournament.put("date", datetime);
+    updatedTournament.put("rankRange", new int[] { minRank, maxRank });
+    updatedTournament.put("status", status);
+    updatedTournament.put("region", region);
+
+    return updatedTournament;
   }
 
   public List<List<User>> getUserGroups(List<List<Map<String, Object>>> rawPlayerGroups) {
