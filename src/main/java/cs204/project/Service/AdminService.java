@@ -103,7 +103,7 @@ public class AdminService {
 
   public List<List<Map<String, Object>>> getNextRoundGroup(Map<String, Object> payload)
       throws JsonProcessingException, HttpClientErrorException {
-    String matchmakingApiUrl = baseGatewayURL + "/matchmaking/matchmaking/next-round";
+    String matchmakingApiUrl = baseGatewayURL + "/matchmaking/next-round";
     // String matchmakingApiUrl = "https://tournament-matchmaking-api-gateway.azuremicroservices.io/matchmaking/next-round";
     List<List<Map<String, Object>>> rawPlayerGroups = getRawPlayerGroups(matchmakingApiUrl, payload);
     return rawPlayerGroups;
