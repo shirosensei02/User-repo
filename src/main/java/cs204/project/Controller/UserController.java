@@ -26,7 +26,7 @@ public class UserController {
 
   @Autowired
   private UserDetailService userService;
-
+  
   private String baseGatewayURL = "https://tournamnet-matchmaking-api-service.azuremicroservices.io";
 
   @GetMapping("")
